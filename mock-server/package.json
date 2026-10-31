@@ -1,0 +1,13 @@
+{
+  "name": "promptarena-mock-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Development-only stand-in for the PromptArena backend. Not part of the product.",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

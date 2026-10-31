@@ -1,0 +1,22 @@
+/*
+ * Design tokens. Colours, typography and motifs are owned by the UI/UX team
+ * (handbook §1). These are neutral placeholders so the UI is usable until then.
+ */
+:root {
+  --color-bg: #0b0f17;
+  --color-surface: #121826;
+  --color-surface-raised: #1a2236;
+  --color-border: #263149;
+  --color-text: #e6eaf2;
+  --color-muted: #8c98ad;
+  --color-accent: #4f8cff;
+  --color-ok: #2fbf71;
+  --color-warn: #f0b429;
+  --color-danger: #ef4444;
+
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --radius: 8px;
+  --hud-height: 64px;
+}

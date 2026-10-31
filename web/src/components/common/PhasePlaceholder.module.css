@@ -1,0 +1,26 @@
+.box {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 24px;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.phase {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+}
+
+.route {
+  margin: 0;
+  color: var(--color-muted);
+}
