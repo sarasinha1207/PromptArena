@@ -1,24 +1,27 @@
 import type { Metadata } from "next";
-import { Big_Shoulders, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { Manrope, Space_Mono, Unbounded } from "next/font/google";
 import type { ReactNode } from "react";
 import { AppProviders } from "@/components/providers/AppProviders";
 import "@/styles/globals.css";
 
-const display = Big_Shoulders({
+// Unbounded: wide, geometric display face for headlines.
+const display = Unbounded({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: ["500", "700", "800", "900"],
   variable: "--font-display-loaded",
   display: "swap",
 });
 
-const body = Instrument_Sans({
+const body = Manrope({
   subsets: ["latin"],
   variable: "--font-body-loaded",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+// Space Mono: terminals, flags and code-like text.
+const mono = Space_Mono({
   subsets: ["latin"],
+  weight: ["400", "700"],
   variable: "--font-mono-loaded",
   display: "swap",
 });

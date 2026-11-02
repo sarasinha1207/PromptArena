@@ -1,70 +1,105 @@
 .rounds {
-  background:
-    radial-gradient(45% 40% at 0% 100%, rgba(255, 49, 88, 0.12), transparent 70%),
-    radial-gradient(45% 40% at 100% 0%, rgba(59, 130, 255, 0.12), transparent 70%),
-    var(--deep);
+  background: #080b20;
+}
+
+/* ---------- Aurora orbs ---------- */
+.orb {
+  position: absolute;
+  z-index: -1;
+  width: 46vw;
+  height: 46vw;
+  max-width: 640px;
+  max-height: 640px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.orbRed {
+  top: -8%;
+  left: -10%;
+  background: radial-gradient(circle, var(--breach), transparent 66%);
+  animation: orbit-a 19s ease-in-out infinite alternate;
+}
+
+.orbBlue {
+  bottom: -14%;
+  right: -8%;
+  background: radial-gradient(circle, var(--shield), transparent 66%);
+  animation: orbit-b 23s ease-in-out infinite alternate;
+}
+
+.orbViolet {
+  top: 30%;
+  left: 38%;
+  opacity: 0.32;
+  background: radial-gradient(circle, var(--violet), transparent 66%);
+  animation: orbit-c 27s ease-in-out infinite alternate;
 }
 
 .tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  margin: 40px 0 32px;
+  margin: 44px 0 36px;
 }
 
 .tab {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
-  padding: 16px 22px;
+  gap: 4px;
+  padding: 18px 22px;
   color: var(--fog);
   text-align: left;
-  background: rgba(238, 241, 251, 0.04);
+  background: rgba(238, 241, 251, 0.05);
   border: 0;
   box-shadow: inset 0 0 0 1px var(--line);
-  clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
-  transition: background 0.25s ease, color 0.25s ease;
+  border-radius: 16px;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .tab:hover {
   color: var(--bone);
-  background: rgba(238, 241, 251, 0.08);
+  background: rgba(238, 241, 251, 0.1);
+  transform: translateY(-3px);
 }
 
 .tab[data-active="true"] {
   color: #fff;
   box-shadow: none;
+  background-size: 200% 100%;
+  animation: gradient-slide 5s linear infinite;
 }
 
 .tab[data-active="true"][data-side="red"] {
-  background: linear-gradient(120deg, #c4143a, var(--breach));
+  background-image: linear-gradient(120deg, #c4143a, var(--breach), #ff7a93, var(--breach), #c4143a);
 }
 
 .tab[data-active="true"][data-side="blue"] {
-  background: linear-gradient(120deg, #1d56c7, var(--shield));
+  background-image: linear-gradient(120deg, #1d56c7, var(--shield), #7fb0ff, var(--shield), #1d56c7);
 }
 
 .tab[data-active="true"][data-side="versus"] {
-  background: linear-gradient(100deg, var(--breach), #8a3dff 50%, var(--shield));
+  background-image: linear-gradient(100deg, var(--breach), var(--violet), var(--shield), var(--violet), var(--breach));
 }
 
 .tabRound {
-  font-size: 0.88rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   opacity: 0.85;
 }
 
 .tabName {
   font-family: var(--font-display);
-  font-size: 1.9rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  line-height: 1.15;
 }
 
-/* ---------- Panel ---------- */
+/* ---------- Panel (re-mounts on tab change, so it animates) ---------- */
 .panel {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
@@ -76,15 +111,20 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  animation: panel-left 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.preview {
+  animation: panel-right 0.7s 0.08s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .role {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
   font-weight: 800;
-  line-height: 1;
-  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .role[data-side="red"] {
@@ -102,8 +142,8 @@
 
 .summary {
   margin: 0;
-  font-size: 1.12rem;
-  line-height: 1.6;
+  font-size: 1.08rem;
+  line-height: 1.65;
   max-width: 52ch;
 }
 
@@ -119,8 +159,22 @@
 
 .points li {
   position: relative;
-  padding-left: 22px;
-  line-height: 1.5;
+  padding-left: 24px;
+  line-height: 1.55;
+  animation: panel-left 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.points li:nth-child(1) {
+  animation-delay: 0.15s;
+}
+.points li:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.points li:nth-child(3) {
+  animation-delay: 0.35s;
+}
+.points li:nth-child(4) {
+  animation-delay: 0.45s;
 }
 
 .points li::before {
@@ -128,10 +182,11 @@
   position: absolute;
   left: 0;
   top: 0.55em;
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   background: var(--flag-gold);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  border-radius: 3px;
+  animation: gem 2.6s ease-in-out infinite;
 }
 
 .chips {
@@ -141,16 +196,24 @@
 }
 
 .chip {
-  padding: 5px 12px;
+  padding: 6px 13px;
   font-size: 0.85rem;
-  background: rgba(59, 130, 255, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(59, 130, 255, 0.4);
+  font-weight: 600;
+  background: rgba(59, 130, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 255, 0.45);
+  border-radius: 999px;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.chip:hover {
+  background: rgba(59, 130, 255, 0.3);
+  transform: translateY(-2px);
 }
 
 .jump {
   width: fit-content;
   color: var(--bone);
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: underline;
   text-decoration-color: var(--breach);
   text-decoration-thickness: 2px;
@@ -159,6 +222,44 @@
 
 .jump:hover {
   text-decoration-color: var(--shield);
+}
+
+@keyframes orbit-a {
+  to {
+    transform: translate(22vw, 18vh) scale(1.2);
+  }
+}
+@keyframes orbit-b {
+  to {
+    transform: translate(-20vw, -14vh) scale(1.15);
+  }
+}
+@keyframes orbit-c {
+  to {
+    transform: translate(-14vw, 12vh) scale(0.8);
+  }
+}
+@keyframes gradient-slide {
+  to {
+    background-position: 200% 0;
+  }
+}
+@keyframes panel-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+@keyframes panel-right {
+  from {
+    opacity: 0;
+    transform: translateX(36px) scale(0.97);
+  }
+}
+@keyframes gem {
+  50% {
+    transform: rotate(90deg) scale(1.25);
+  }
 }
 
 @media (max-width: 960px) {
@@ -180,7 +281,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tab {
+  .orb,
+  .tab[data-active="true"],
+  .copy,
+  .preview,
+  .points li,
+  .points li::before {
+    animation: none;
+  }
+  .tab,
+  .chip {
     transition: none;
   }
 }

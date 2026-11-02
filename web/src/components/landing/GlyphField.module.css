@@ -1,0 +1,58 @@
+.field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.glyph {
+  position: absolute;
+  bottom: -10%;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: rgba(238, 241, 251, 0.16);
+  opacity: 0;
+  animation: float-up linear infinite;
+}
+
+.field[data-tone="red"] .glyph {
+  color: rgba(255, 120, 140, 0.26);
+}
+
+.field[data-tone="blue"] .glyph {
+  color: rgba(120, 170, 255, 0.28);
+}
+
+.field[data-tone="mixed"] .glyph[data-alt="true"] {
+  color: rgba(255, 120, 140, 0.24);
+}
+
+.field[data-tone="mixed"] .glyph[data-alt="false"] {
+  color: rgba(120, 170, 255, 0.26);
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(-6deg);
+  }
+  12% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-115vh) rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyph {
+    animation: none;
+    opacity: 0.5;
+    bottom: auto;
+    top: 30%;
+  }
+}

@@ -5,6 +5,15 @@ export const API_BASE_URL =
 export const WS_URL =
   process.env.NEXT_PUBLIC_WS_URL ?? "ws://localhost:4000/ws/tournament";
 
+/**
+ * Registration form link, shared later by the event coordinator.
+ * Leave empty until then: the Register now option shows a notice instead.
+ */
+export const REGISTRATION_URL = process.env.NEXT_PUBLIC_REGISTRATION_URL ?? "";
+
+/** Coordinator email for password help. Optional. */
+export const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "";
+
 /** Heartbeat ping/pong interval for clock calibration (handbook §4.3). */
 export const HEARTBEAT_INTERVAL_MS = 30_000;
 

@@ -7,7 +7,7 @@
   --split: 50%;
   --skew: 8deg;
   position: relative;
-  min-height: max(720px, 100svh);
+  min-height: max(740px, 100svh);
   overflow: hidden;
   isolation: isolate;
 }
@@ -22,20 +22,64 @@
   white-space: nowrap;
 }
 
-/* ---------- Blue side (full stage, underneath) ---------- */
+/* ---------- Shared effect layers ---------- */
+.blueFx,
+.redFx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  width: 56vw;
+  height: 56vw;
+  max-width: 760px;
+  max-height: 760px;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.blobRed {
+  top: -12%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(255, 49, 88, 0.55), transparent 65%);
+  animation: drift-a 14s ease-in-out infinite alternate;
+}
+
+.blobBlue {
+  right: -10%;
+  top: 6%;
+  background: radial-gradient(circle, rgba(59, 130, 255, 0.55), transparent 65%);
+  animation: drift-b 16s ease-in-out infinite alternate;
+}
+
+/* ---------- Blue side: flowing grid ---------- */
 .blue {
   position: absolute;
   inset: 0;
   z-index: 0;
   display: flex;
   justify-content: flex-end;
-  background:
-    radial-gradient(60% 55% at 82% 38%, rgba(59, 130, 255, 0.38), transparent 70%),
-    repeating-linear-gradient(-45deg, rgba(238, 241, 251, 0.03) 0 2px, transparent 2px 16px),
-    linear-gradient(200deg, #0b1d4a 0%, #081134 55%, var(--ink) 100%);
+  background: linear-gradient(200deg, #0a1b4d 0%, #070f33 55%, var(--ink) 100%);
+}
+
+.blueGrid {
+  position: absolute;
+  inset: -64px;
+  background-image:
+    linear-gradient(rgba(120, 170, 255, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 170, 255, 0.13) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(70% 70% at 75% 35%, #000, transparent 80%);
+  -webkit-mask-image: radial-gradient(70% 70% at 75% 35%, #000, transparent 80%);
+  animation: grid-pan 9s linear infinite;
 }
 
 .blueContent {
+  position: relative;
   width: 44%;
   padding: clamp(190px, 31vh, 300px) clamp(24px, 6vw, 96px) 0 0;
   text-align: right;
@@ -44,7 +88,7 @@
   align-items: flex-end;
 }
 
-/* ---------- Red side (skewed, width follows the seam) ---------- */
+/* ---------- Red side: skewed, width follows the seam ---------- */
 .red {
   position: absolute;
   top: 0;
@@ -54,14 +98,26 @@
   z-index: 1;
   overflow: hidden;
   transform: skewX(calc(var(--skew) * -1));
-  background:
-    radial-gradient(60% 55% at 22% 30%, rgba(255, 49, 88, 0.4), transparent 70%),
-    repeating-linear-gradient(-45deg, rgba(238, 241, 251, 0.03) 0 2px, transparent 2px 16px),
-    linear-gradient(160deg, #3a0b1c 0%, #1a0a1f 55%, var(--ink) 100%);
-  box-shadow: 2px 0 0 var(--breach), 0 0 70px rgba(255, 49, 88, 0.5);
+  background: linear-gradient(160deg, #3d0b1f 0%, #1b0a22 55%, var(--ink) 100%);
+  box-shadow: 2px 0 0 var(--breach), 0 0 80px rgba(255, 49, 88, 0.55);
+  animation: seam-pulse 3.2s ease-in-out infinite;
+}
+
+.redStripes {
+  position: absolute;
+  inset: -80px;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 120, 140, 0.1) 0 2px,
+    transparent 2px 22px
+  );
+  mask-image: radial-gradient(70% 70% at 25% 35%, #000, transparent 80%);
+  -webkit-mask-image: radial-gradient(70% 70% at 25% 35%, #000, transparent 80%);
+  animation: stripes 6s linear infinite;
 }
 
 .redContent {
+  position: relative;
   width: calc(100vw * 0.44);
   max-width: 100%;
   margin-left: 14vw;
@@ -72,46 +128,70 @@
   align-items: flex-start;
 }
 
+/* ---------- Perspective floor under everything ---------- */
+.floor {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: linear-gradient(to top, #000 10%, transparent 95%);
+  -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 95%);
+}
+
+.floor::before {
+  content: "";
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -30%;
+  height: 160%;
+  background-image:
+    linear-gradient(rgba(238, 241, 251, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 241, 251, 0.22) 1px, transparent 1px);
+  background-size: 70px 70px;
+  transform: perspective(420px) rotateX(64deg);
+  transform-origin: center bottom;
+  animation: floor-move 3.2s linear infinite;
+}
+
 /* ---------- Headline type ---------- */
 .headline {
-  margin: 18px 0 20px;
+  margin: 20px 0 22px;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(3.6rem, 10.2vw, 10.5rem);
-  line-height: 0.84;
-  letter-spacing: 0.005em;
+  font-size: clamp(2.3rem, 5.9vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   text-transform: uppercase;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
-.headlineRed {
-  background-image: linear-gradient(180deg, #ffd9df 0%, #ff5f7b 45%, var(--breach) 100%);
-}
-
-.headlineBlue {
-  background-image: linear-gradient(180deg, #e0ecff 0%, #7fb0ff 45%, var(--shield) 100%);
+.line {
+  display: block;
 }
 
 .roundTag {
   margin: 0;
-  padding: 6px 14px;
+  padding: 7px 16px;
   width: fit-content;
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--bone);
   background: rgba(238, 241, 251, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(238, 241, 251, 0.2);
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  box-shadow: inset 0 0 0 1px rgba(238, 241, 251, 0.22);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
 }
 
 .sideCopy {
   margin: 0;
   max-width: 30ch;
-  color: rgba(238, 241, 251, 0.78);
-  font-size: 1.08rem;
-  line-height: 1.55;
+  color: rgba(238, 241, 251, 0.8);
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
 /* ---------- VS badge rides the seam ---------- */
@@ -120,19 +200,36 @@
   z-index: 3;
   top: 50%;
   left: var(--split);
-  width: 76px;
-  height: 76px;
+  width: 84px;
+  height: 84px;
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
+  pointer-events: none;
+}
+
+.vs {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
   font-family: var(--font-display);
-  font-size: 2.1rem;
+  font-size: 1.45rem;
   font-weight: 900;
   color: #fff;
   background: var(--ink);
   box-shadow: inset 0 0 0 2px var(--flag-gold);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  pointer-events: none;
+  border-radius: 26px;
+}
+
+.ring {
+  position: absolute;
+  inset: -14px;
+  border: 2px solid var(--flag-gold);
+  border-radius: 36px;
+  opacity: 0;
+  animation: ring-out 2.8s ease-out infinite;
 }
 
 /* ---------- Bottom call to action ---------- */
@@ -141,22 +238,31 @@
   z-index: 4;
   left: 0;
   right: 0;
-  bottom: clamp(32px, 7vh, 72px);
+  bottom: clamp(20px, 4vh, 44px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 22px;
+  gap: 14px;
   padding: 0 24px;
   text-align: center;
 }
 
 .footCopy {
   margin: 0;
-  max-width: 46ch;
+  font-size: 1.1rem;
+  font-weight: 600;
   color: var(--bone);
-  font-size: 1.12rem;
-  line-height: 1.55;
-  text-wrap: balance;
+}
+
+.typeLine {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  min-height: 1.6em;
+  color: var(--fog);
+  font-size: 1.05rem;
 }
 
 .actions {
@@ -164,18 +270,92 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 14px;
+  margin-top: 6px;
 }
 
-/* ---------- One load-in sequence ---------- */
+.cue {
+  display: grid;
+  place-items: start center;
+  width: 24px;
+  height: 38px;
+  margin-top: 6px;
+  border: 2px solid rgba(238, 241, 251, 0.45);
+  border-radius: 14px;
+}
+
+.cueDot {
+  width: 4px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 2px;
+  background: var(--bone);
+  animation: cue 1.8s ease-in-out infinite;
+}
+
+/* ---------- Motion ---------- */
+@keyframes drift-a {
+  to {
+    transform: translate(18vw, 14vh) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate(-16vw, 18vh) scale(1.1);
+  }
+}
+@keyframes grid-pan {
+  to {
+    transform: translate(64px, 64px);
+  }
+}
+@keyframes stripes {
+  to {
+    transform: translate(-31px, 31px);
+  }
+}
+@keyframes floor-move {
+  to {
+    background-position: 0 70px;
+  }
+}
+@keyframes seam-pulse {
+  50% {
+    box-shadow: 2px 0 0 #ff7a93, 0 0 130px rgba(255, 49, 88, 0.8);
+  }
+}
+@keyframes ring-out {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+@keyframes cue {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .red {
-    animation: slide-in-left 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: slide-in-left 1s cubic-bezier(0.2, 0.8, 0.2, 1) both, seam-pulse 3.2s 1s ease-in-out infinite;
   }
   .blueContent {
-    animation: slide-in-right 0.9s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: slide-in-right 1s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
   .foot {
-    animation: rise 0.8s 0.55s ease-out both;
+    animation: rise 0.9s 1.2s ease-out both;
   }
 
   @keyframes slide-in-left {
@@ -192,8 +372,20 @@
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(18px);
     }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob,
+  .blueGrid,
+  .redStripes,
+  .floor::before,
+  .red,
+  .ring,
+  .cueDot {
+    animation: none;
   }
 }
 
@@ -213,11 +405,11 @@
     width: 100%;
     transform: none;
     box-shadow: none;
+    animation: none;
   }
 
   .red {
     order: 1;
-    animation: none;
     border-bottom: 2px solid var(--breach);
   }
 
@@ -228,19 +420,24 @@
   .redContent {
     width: 100%;
     margin: 0;
-    padding: 118px 24px 40px;
+    padding: 118px 24px 44px;
     transform: none;
   }
 
   .blueContent {
     width: 100%;
-    padding: 44px 24px 40px;
+    padding: 48px 24px 44px;
     text-align: left;
     align-items: flex-start;
     animation: none;
   }
 
-  .versus {
+  .headline {
+    font-size: clamp(2.2rem, 11vw, 3.4rem);
+  }
+
+  .versus,
+  .floor {
     display: none;
   }
 
@@ -248,7 +445,7 @@
     position: relative;
     order: 3;
     bottom: auto;
-    padding: 40px 24px 56px;
+    padding: 44px 24px 56px;
     animation: none;
     background: var(--ink);
   }

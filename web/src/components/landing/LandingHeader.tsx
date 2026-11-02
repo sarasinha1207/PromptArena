@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NAV_LINKS } from "@/content/landing";
 import { LoginButton } from "./LoginButton";
 import { LogoMark } from "./LogoMark";
@@ -12,11 +12,15 @@ export function LandingHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("");
+  const progressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 24);
       if (window.scrollY < 200) setActive("");
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      if (progressRef.current) progressRef.current.style.transform = `scaleX(${ratio})`;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -78,6 +82,8 @@ export function LandingHeader() {
           <span />
           <span />
         </button>
+
+        <span className={styles.progress} ref={progressRef} aria-hidden="true" />
       </div>
     </header>
   );

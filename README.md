@@ -95,7 +95,13 @@ Every **Log in** button goes to `/auth/login`; signed-in users see **Enter the a
 - All copy lives in `web/src/content/landing.ts` and comes from handbook §1, §2, §3, §6–§8.
   Secret flags and exploit hints from §3 are deliberately not shown.
 - Organizer names, event dates, prizes and sponsors are not in the handbook, so the page has none.
-- Fonts: Big Shoulders (headlines), Instrument Sans (body), JetBrains Mono (terminals), via `next/font/google`.
+- Fonts: Unbounded (headlines), Manrope (body), Space Mono (terminals and flags), via `next/font/google`.
+- Backgrounds differ per section: split red/blue hero with moving stripes, grid and floor, dotted grid (about),
+  aurora orbs (rounds), perspective floor (levels), blueprint paper (rulebook), aurora and glyph rain (closing).
+- Motion: letter-by-letter headline, typewriter line, scroll reveals, slanted marquee ribbons, scroll progress bar,
+  cursor glow, tilt on screen previews, expanding level slats, shimmer buttons. All of it is switched off under
+  `prefers-reduced-motion`.
+- The login page (`/auth/login`) shares the same look: arena showcase on the left, animated form on the right.
 - Colours are neutral-to-arena placeholders for the UI/UX team; they live in `web/src/styles/tokens.css`.
 
 ## Assumptions to confirm with the backend team
@@ -111,6 +117,8 @@ isolated in one file so it is easy to change.
 | WebSocket message envelope | `{ "event": "...", "data": {...} }`; `pong` carries `server_epoch` at top level | `web/src/lib/realtime/gateway.ts` |
 | State-change payload | `{ state, current_round, target_end_epoch }` (epoch ms) | `web/src/types/tournament.ts` |
 | WebSocket authentication | Not defined — socket currently connects without credentials | `web/src/lib/realtime/gateway.ts` |
+| Register now | Links to `NEXT_PUBLIC_REGISTRATION_URL` (the coordinator's form, shared later); until it is set, shows a notice | `web/src/lib/config.ts`, `web/.env.example` |
+| Forgot password | No reset endpoint in the handbook, so it tells teams to ask the event coordinator (optional `NEXT_PUBLIC_SUPPORT_EMAIL`) | `web/src/components/auth/LoginForm.tsx` |
 | Session token storage | `localStorage` | `web/src/lib/auth/tokenStorage.ts` |
 | Pause states | Only `ROUND_1_PAUSED` exists in §5, so only it triggers the pause banner | `web/src/lib/tournament/labels.ts` |
 | Status badge | Shown only for LIVE / PAUSED / FROZEN (the three in §4.2); other states show no badge | `web/src/lib/tournament/labels.ts` |

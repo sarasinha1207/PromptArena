@@ -1,36 +1,100 @@
 .cta {
   position: relative;
-  padding: clamp(72px, 10vw, 120px) 0;
+  padding: clamp(88px, 12vw, 150px) 0;
   overflow: hidden;
-  background:
-    radial-gradient(50% 120% at 0% 50%, rgba(255, 49, 88, 0.3), transparent 70%),
-    radial-gradient(50% 120% at 100% 50%, rgba(59, 130, 255, 0.34), transparent 70%),
-    var(--ink);
+  isolation: isolate;
+  background: var(--ink);
+}
+
+.aurora {
+  position: absolute;
+  z-index: -1;
+  width: 55vw;
+  height: 55vw;
+  max-width: 800px;
+  max-height: 800px;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.auroraRed {
+  left: -12%;
+  top: -30%;
+  background: radial-gradient(circle, rgba(255, 49, 88, 0.6), transparent 66%);
+  animation: sway-a 12s ease-in-out infinite alternate;
+}
+
+.auroraBlue {
+  right: -12%;
+  bottom: -35%;
+  background: radial-gradient(circle, rgba(59, 130, 255, 0.65), transparent 66%);
+  animation: sway-b 14s ease-in-out infinite alternate;
 }
 
 .inner {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   text-align: center;
 }
 
 .title {
   margin: 0;
-  max-width: 14ch;
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(3rem, 8vw, 6.5rem);
-  line-height: 0.9;
-  letter-spacing: 0.005em;
+  font-size: clamp(2rem, 6vw, 5rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   text-transform: uppercase;
-  text-wrap: balance;
 }
 
 .copy {
-  margin: 0 0 8px;
+  margin: 0;
   max-width: 44ch;
-  color: rgba(238, 241, 251, 0.8);
+  color: rgba(238, 241, 251, 0.82);
   font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Spinning light ring behind the button */
+.action {
+  position: relative;
+  display: inline-flex;
+  margin-top: 8px;
+}
+
+.ring {
+  position: absolute;
+  inset: -16px -22px;
+  z-index: -1;
+  background: conic-gradient(from 0deg, var(--breach), var(--violet), var(--shield), var(--cyan), var(--breach));
+  filter: blur(22px);
+  opacity: 0.65;
+  animation: spin 6s linear infinite;
+}
+
+@keyframes sway-a {
+  to {
+    transform: translate(22vw, 16vh) scale(1.15);
+  }
+}
+@keyframes sway-b {
+  to {
+    transform: translate(-22vw, -14vh) scale(1.12);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .ring {
+    animation: none;
+  }
 }

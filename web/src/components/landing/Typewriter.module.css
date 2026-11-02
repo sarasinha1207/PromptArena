@@ -1,0 +1,27 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  color: var(--flag-gold);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.caret {
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 4px;
+  background: var(--flag-gold);
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}

@@ -215,6 +215,15 @@ export const LEVELS: Level[] = [
   },
 ];
 
+/** Short event rules shown beside the login form (handbook §2, §6.2). */
+export const LOGIN_RULES = [
+  "Every team has its own flag for every level. Sharing a flag gets your team disqualified.",
+  "Words you send and receive come out of your team's token wallet.",
+  "A level's points drop as more teams solve it. The first solver keeps a +50 First Blood bonus.",
+  "A wrong flag locks flag entry for 15 seconds.",
+  "A guardrail cuts any reply that starts to leak a flag.",
+];
+
 export const RULES = [
   {
     title: "Every team gets its own flag",

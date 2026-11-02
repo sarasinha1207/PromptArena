@@ -1,66 +1,332 @@
-.form {
-  width: min(420px, calc(100vw - 32px));
-  margin: 12vh auto 0;
-  padding: 28px;
+.card {
+  position: relative;
+  width: min(440px, 100%);
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  gap: 20px;
+  padding: 36px 34px 34px;
+  background: rgba(13, 19, 48, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 26px;
+  animation: card-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.card[data-shake="true"] {
+  animation: shake 0.45s ease both;
+}
+
+/* Flowing gradient edge */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(120deg, var(--breach), var(--violet), var(--shield), var(--cyan), var(--breach));
+  background-size: 300% 300%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: edge-flow 6s linear infinite;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.logo {
+  display: inline-flex;
+  width: fit-content;
+  animation: logo-float 4s ease-in-out infinite;
 }
 
 .title {
-  margin: 0;
-  font-size: 1.5rem;
+  margin: 8px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
 }
 
 .hint {
   margin: 0;
-  color: var(--color-muted);
-  font-size: 0.9rem;
+  color: var(--fog);
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
+/* ---------- Floating-label fields ---------- */
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 0.9rem;
+  position: relative;
 }
 
 .field input {
-  padding: 10px 12px;
-  background: var(--color-bg);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  width: 100%;
+  padding: 24px 74px 10px 16px;
+  color: var(--bone);
   font: inherit;
+  font-size: 1rem;
+  background: rgba(6, 8, 20, 0.7);
+  border: 0;
+  box-shadow: inset 0 0 0 1px rgba(238, 241, 251, 0.16);
+  border-radius: var(--radius-md);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
 }
 
-.field input:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 1px;
+.field input:focus {
+  outline: none;
+  background: rgba(6, 8, 20, 0.95);
+  box-shadow: inset 0 0 0 2px var(--shield), inset 0 0 28px rgba(59, 130, 255, 0.18);
+}
+
+.field input:disabled {
+  opacity: 0.6;
+}
+
+.field label {
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  color: var(--fog);
+  font-size: 1rem;
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  transform: translateY(-11px) scale(0.76);
+  color: var(--cyan);
+}
+
+.toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  color: var(--fog);
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: transparent;
+  border: 0;
+}
+
+.toggle:hover {
+  color: var(--bone);
 }
 
 .error {
   margin: 0;
-  padding: 8px 12px;
-  color: var(--color-danger);
-  border: 1px solid var(--color-danger);
-  border-radius: var(--radius);
-  font-size: 0.9rem;
+  padding: 11px 14px;
+  color: #ff8aa0;
+  font-size: 0.92rem;
+  background: rgba(255, 49, 88, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 49, 88, 0.5);
+  border-radius: var(--radius-md);
+  animation: error-in 0.35s ease both;
 }
 
+/* ---------- Submit ---------- */
 .submit {
-  padding: 10px 14px;
-  background: var(--color-accent);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 15px 20px;
+  overflow: hidden;
   color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+  border: 0;
+  background: linear-gradient(100deg, var(--breach), var(--violet), var(--shield), var(--violet), var(--breach));
+  background-size: 250% 100%;
+  border-radius: var(--radius-md);
+  animation: gradient-flow 7s linear infinite;
+  transition: transform 0.2s ease;
+}
+
+.submit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
+  transform: translateX(-130%);
+  transition: transform 0.75s ease;
+}
+
+.submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.submit:hover:not(:disabled)::after {
+  transform: translateX(130%);
 }
 
 .submit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  cursor: progress;
+  opacity: 0.85;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ---------- Forgot password and register ---------- */
+.forgotRow {
+  display: flex;
+  justify-content: flex-end;
+  margin: -8px 0 -4px;
+}
+
+.linkButton {
+  padding: 4px 2px;
+  color: var(--cyan);
+  font-size: 0.88rem;
+  font-weight: 700;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.notice {
+  margin: 0;
+  padding: 12px 14px;
+  color: rgba(238, 241, 251, 0.9);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  background: rgba(59, 130, 255, 0.12);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 255, 0.45);
+  animation: error-in 0.35s ease both;
+}
+
+.notice a {
+  color: var(--cyan);
+  font-weight: 700;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2px;
+  color: var(--fog);
+  font-size: 0.88rem;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.register {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 20px;
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  background: rgba(238, 241, 251, 0.06);
+  border: 0;
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px rgba(238, 241, 251, 0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.register:hover {
+  background: rgba(238, 241, 251, 0.14);
+  transform: translateY(-2px);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+  }
+}
+@keyframes edge-flow {
+  to {
+    background-position: 300% 300%;
+  }
+}
+@keyframes logo-float {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes shake {
+  15% {
+    transform: translateX(-10px);
+  }
+  35% {
+    transform: translateX(9px);
+  }
+  55% {
+    transform: translateX(-6px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+@keyframes error-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes gradient-flow {
+  to {
+    background-position: 250% 0;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card::after,
+  .card[data-shake="true"],
+  .logo,
+  .submit,
+  .error,
+  .spinner {
+    animation: none;
+  }
+  .submit::after,
+  .field label,
+  .field input {
+    transition: none;
+  }
 }

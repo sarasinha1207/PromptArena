@@ -1,14 +1,57 @@
 .levels {
-  background:
-    radial-gradient(40% 40% at 50% 100%, rgba(138, 61, 255, 0.14), transparent 70%),
-    var(--ink);
+  background: linear-gradient(180deg, var(--ink), #0a0822 60%, #0d0a2b);
+}
+
+/* ---------- Background: perspective floor + halo ---------- */
+.floor {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 55%;
+  overflow: hidden;
+  mask-image: linear-gradient(to top, #000 0%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 90%);
+}
+
+.floor::before {
+  content: "";
+  position: absolute;
+  left: -60%;
+  right: -60%;
+  bottom: -40%;
+  height: 170%;
+  background-image:
+    linear-gradient(rgba(138, 61, 255, 0.55) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(138, 61, 255, 0.55) 1px, transparent 1px);
+  background-size: 84px 84px;
+  transform: perspective(520px) rotateX(66deg);
+  transform-origin: center bottom;
+  animation: floor-move 4s linear infinite;
+}
+
+.halo {
+  position: absolute;
+  z-index: -1;
+  top: 8%;
+  left: 50%;
+  width: 60vw;
+  height: 40vw;
+  max-width: 900px;
+  max-height: 560px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(138, 61, 255, 0.35), transparent 68%);
+  filter: blur(80px);
+  animation: halo-breathe 8s ease-in-out infinite;
 }
 
 .rail {
   display: flex;
   gap: 10px;
-  height: 620px;
-  margin-top: 48px;
+  height: 640px;
+  margin-top: 52px;
 }
 
 .slat {
@@ -19,16 +62,43 @@
   overflow: hidden;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--accent) 16%, var(--deep)) 0%,
-    var(--deep) 75%
+    color-mix(in srgb, var(--accent) 20%, #0b0f2a) 0%,
+    #0b0f2a 78%
   );
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
-  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
-  transition: flex-grow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border-radius: var(--radius-lg);
+  transition: flex-grow 0.65s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s ease;
+}
+
+.slat:not([data-active="true"]):hover {
+  transform: translateY(-6px);
 }
 
 .slat[data-active="true"] {
   flex-grow: 7;
+}
+
+/* Flowing accent border on the open slat */
+.slat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(120deg, var(--accent), transparent 35%, var(--accent) 70%, transparent);
+  background-size: 250% 250%;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+  animation: border-flow 5s linear infinite;
+}
+
+.slat[data-active="true"]::after {
+  opacity: 1;
 }
 
 /* ---------- Collapsed label ---------- */
@@ -56,16 +126,14 @@
 
 .slatNumber {
   color: var(--accent);
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .slatName {
   font-family: var(--font-display);
-  font-size: 2.2rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
   white-space: nowrap;
 }
 
@@ -75,43 +143,72 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: min(640px, 100%);
+  width: min(660px, 100%);
   padding: 32px 36px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0s 0.3s;
+  transition: opacity 0.25s ease, visibility 0s 0.25s;
 }
 
 .slat[data-active="true"] .detail {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.4s 0.25s ease, visibility 0s;
+  transition: opacity 0.3s 0.2s ease, visibility 0s;
+}
+
+/* Staggered entrance each time a slat opens */
+.slat[data-active="true"] .detail > * {
+  animation: detail-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.slat[data-active="true"] .detail > :nth-child(1) {
+  animation-delay: 0.3s;
+}
+.slat[data-active="true"] .detail > :nth-child(2) {
+  animation-delay: 0.38s;
+}
+.slat[data-active="true"] .detail > :nth-child(3) {
+  animation-delay: 0.46s;
+}
+.slat[data-active="true"] .detail > :nth-child(4) {
+  animation-delay: 0.54s;
+}
+.slat[data-active="true"] .detail > :nth-child(5) {
+  animation-delay: 0.62s;
+}
+.slat[data-active="true"] .detail > :nth-child(6) {
+  animation-delay: 0.7s;
+}
+.slat[data-active="true"] .detail > :nth-child(7) {
+  animation-delay: 0.78s;
+}
+.slat[data-active="true"] .detail > :nth-child(8) {
+  animation-delay: 0.86s;
 }
 
 .levelTag {
   margin: 0;
   color: var(--accent);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .name {
-  margin: -6px 0 0;
+  margin: -4px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 5rem);
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
   font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 50px color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .title {
   margin: 0;
   color: var(--bone);
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .tier {
@@ -119,7 +216,7 @@
   align-items: center;
   gap: 14px;
   color: var(--fog);
-  font-size: 0.95rem;
+  font-size: 0.93rem;
 }
 
 .meter {
@@ -132,18 +229,24 @@
   width: 16px;
   height: 8px;
   background: rgba(238, 241, 251, 0.14);
-  transform: skewX(-20deg);
+  border-radius: 4px;
 }
 
 .meter i[data-on="true"] {
   background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.slat[data-active="true"] .meter i[data-on="true"] {
+  animation: meter-fill 0.5s ease-out both;
+  animation-delay: calc(0.55s + var(--k) * 0.09s);
 }
 
 .story,
 .quirks {
   margin: 0;
   max-width: 56ch;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .story {
@@ -166,10 +269,11 @@
   margin: 0;
   padding: 11px 16px;
   max-width: 54ch;
-  line-height: 1.5;
-  font-size: 0.98rem;
-  background: rgba(7, 10, 26, 0.55);
+  line-height: 1.55;
+  font-size: 0.95rem;
+  background: rgba(6, 8, 20, 0.6);
   border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
 }
 
 .refusal {
@@ -185,18 +289,18 @@
 
 .slat[data-voice="arcade"] .line {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 
 .slat[data-voice="street"] .line {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .slat[data-voice="clinical"] .line {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   letter-spacing: 0.02em;
 }
 
@@ -209,6 +313,35 @@
 .secret span {
   color: var(--flag-gold);
   letter-spacing: -0.1em;
+}
+
+@keyframes floor-move {
+  to {
+    background-position: 0 84px;
+  }
+}
+@keyframes halo-breathe {
+  50% {
+    opacity: 0.6;
+    transform: translateX(-50%) scale(1.12);
+  }
+}
+@keyframes border-flow {
+  to {
+    background-position: 250% 250%;
+  }
+}
+@keyframes detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes meter-fill {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
 }
 
 /* ---------- Mobile: vertical accordion ---------- */
@@ -224,21 +357,24 @@
     transition: height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
+  .slat:not([data-active="true"]):hover {
+    transform: none;
+  }
+
   .slat[data-active="true"] {
-    height: 760px;
+    height: 800px;
   }
 
   .slatButton {
     writing-mode: horizontal-tb;
     transform: none;
-    justify-content: flex-start;
     padding: 0 22px;
     flex-direction: row-reverse;
     justify-content: space-between;
   }
 
   .slatName {
-    font-size: 1.9rem;
+    font-size: 1.1rem;
   }
 
   .detail {
@@ -249,11 +385,18 @@
 
 @media (max-width: 520px) {
   .slat[data-active="true"] {
-    height: 880px;
+    height: 920px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .floor::before,
+  .halo,
+  .slat::after,
+  .slat[data-active="true"] .detail > *,
+  .slat[data-active="true"] .meter i[data-on="true"] {
+    animation: none;
+  }
   .slat,
   .detail,
   .slatButton {
