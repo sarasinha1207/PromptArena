@@ -13,8 +13,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   const status = useStore(authStore, (s) => s.status);
   const role = useStore(authStore, (s) => s.role);
 
+  // The landing page and login page have their own chrome, not the in-event HUD.
   const showHud =
-    status === "authenticated" && role === "team" && pathname !== "/auth/login";
+    status === "authenticated" &&
+    role === "team" &&
+    pathname !== "/" &&
+    pathname !== "/auth/login";
 
   return (
     <>

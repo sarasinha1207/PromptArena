@@ -1,0 +1,262 @@
+.levels {
+  background:
+    radial-gradient(40% 40% at 50% 100%, rgba(138, 61, 255, 0.14), transparent 70%),
+    var(--ink);
+}
+
+.rail {
+  display: flex;
+  gap: 10px;
+  height: 620px;
+  margin-top: 48px;
+}
+
+.slat {
+  --accent: #fff;
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 16%, var(--deep)) 0%,
+    var(--deep) 75%
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  transition: flex-grow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.slat[data-active="true"] {
+  flex-grow: 7;
+}
+
+/* ---------- Collapsed label ---------- */
+.slatButton {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 0;
+  color: var(--bone);
+  background: transparent;
+  border: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  justify-content: flex-end;
+  transition: opacity 0.25s ease;
+}
+
+.slat[data-active="true"] .slatButton {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.slatNumber {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.slatName {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---------- Expanded detail ---------- */
+.detail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(640px, 100%);
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
+}
+
+.slat[data-active="true"] .detail {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s 0.25s ease, visibility 0s;
+}
+
+.levelTag {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.name {
+  margin: -6px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--bone);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.tier {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--fog);
+  font-size: 0.95rem;
+}
+
+.meter {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.meter i {
+  display: block;
+  width: 16px;
+  height: 8px;
+  background: rgba(238, 241, 251, 0.14);
+  transform: skewX(-20deg);
+}
+
+.meter i[data-on="true"] {
+  background: var(--accent);
+}
+
+.story,
+.quirks {
+  margin: 0;
+  max-width: 56ch;
+  line-height: 1.6;
+}
+
+.story {
+  color: var(--bone);
+}
+
+.quirks {
+  color: var(--fog);
+}
+
+/* ---------- Voice samples ---------- */
+.voice {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.line {
+  margin: 0;
+  padding: 11px 16px;
+  max-width: 54ch;
+  line-height: 1.5;
+  font-size: 0.98rem;
+  background: rgba(7, 10, 26, 0.55);
+  border-left: 3px solid var(--accent);
+}
+
+.refusal {
+  color: var(--fog);
+  border-left-color: rgba(238, 241, 251, 0.25);
+}
+
+.slat[data-voice="archaic"] .line {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+}
+
+.slat[data-voice="arcade"] .line {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.slat[data-voice="street"] .line {
+  font-weight: 600;
+}
+
+.slat[data-voice="clinical"] .line {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.secret {
+  margin: auto 0 0;
+  color: var(--fog);
+  font-size: 0.9rem;
+}
+
+.secret span {
+  color: var(--flag-gold);
+  letter-spacing: -0.1em;
+}
+
+/* ---------- Mobile: vertical accordion ---------- */
+@media (max-width: 860px) {
+  .rail {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .slat {
+    flex: none;
+    height: 84px;
+    transition: height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .slat[data-active="true"] {
+    height: 760px;
+  }
+
+  .slatButton {
+    writing-mode: horizontal-tb;
+    transform: none;
+    justify-content: flex-start;
+    padding: 0 22px;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+
+  .slatName {
+    font-size: 1.9rem;
+  }
+
+  .detail {
+    width: 100%;
+    padding: 24px 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .slat[data-active="true"] {
+    height: 880px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slat,
+  .detail,
+  .slatButton {
+    transition: none;
+  }
+}

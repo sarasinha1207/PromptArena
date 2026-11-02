@@ -10,6 +10,7 @@ PromptArena/
 ├── web/                         Next.js (App Router) + TypeScript frontend
 │   └── src/
 │       ├── app/                 Routes — mirrors the handbook routing tree (§4.1)
+│       │   ├── page.tsx         Public landing page at `/`
 │       │   ├── auth/login/
 │       │   ├── rules/
 │       │   ├── arena/           round-1/, round-1/[challenge_id]/, round-2/,
@@ -17,7 +18,8 @@ PromptArena/
 │       │   ├── leaderboard/
 │       │   └── admin/           dashboard/, challenges/, teams/, broadcast/
 │       ├── components/
-│       │   ├── hud/             Persistent top bar (§4.2)
+│       │   ├── landing/         Public site: header, hero, about, rounds, levels, rulebook, footer
+│       │   ├── hud/             Persistent in-event top bar (§4.2)
 │       │   ├── overlays/        Pause banner (§5)
 │       │   ├── auth/            LoginForm, RequireAuth route guard
 │       │   ├── providers/       App shell, auth bootstrap, WebSocket connector
@@ -29,7 +31,8 @@ PromptArena/
 │       │   ├── clock/           Server clock drift sync (§4.3)
 │       │   ├── tournament/      State → label/status helpers (§5)
 │       │   └── ...              config, formatting, wallet thresholds, token storage
-│       ├── hooks/               useMasterClock
+│       ├── content/             Landing page copy (all taken from the handbook)
+│       ├── hooks/               useMasterClock, useTimeline
 │       ├── styles/              Design tokens (UI/UX owns final values) + globals
 │       └── types/               API and tournament types
 ├── mock-server/                 DEV ONLY stand-in for the backend (not part of the product)
@@ -81,6 +84,19 @@ curl -X POST localhost:4000/api/admin/tournament/state -H "Authorization: Bearer
 - WebSocket hook for tournament state, including the full-screen pause banner and resume.
 - Server-time clock sync (30 s ping/pong, `drift_offset = server_epoch + rtt/2 − t1`).
 - `/rules` page (content from §2).
+
+## Public landing page (added on request, outside the handbook's route list)
+
+`/` is a public marketing page with its own header and footer, separate from the in-event HUD.
+Sections: hero (split red/blue screen whose seam follows the cursor), about, rounds (with
+previews of the real arena screens), the five levels, the rulebook, a login call to action.
+Every **Log in** button goes to `/auth/login`; signed-in users see **Enter the arena** instead.
+
+- All copy lives in `web/src/content/landing.ts` and comes from handbook §1, §2, §3, §6–§8.
+  Secret flags and exploit hints from §3 are deliberately not shown.
+- Organizer names, event dates, prizes and sponsors are not in the handbook, so the page has none.
+- Fonts: Big Shoulders (headlines), Instrument Sans (body), JetBrains Mono (terminals), via `next/font/google`.
+- Colours are neutral-to-arena placeholders for the UI/UX team; they live in `web/src/styles/tokens.css`.
 
 ## Assumptions to confirm with the backend team
 

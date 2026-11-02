@@ -1,0 +1,153 @@
+.about {
+  background:
+    radial-gradient(50% 40% at 85% 0%, rgba(59, 130, 255, 0.12), transparent 70%),
+    var(--ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+
+.story {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Old way vs new way ---------- */
+.versus {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 300px;
+  background: var(--deep);
+  box-shadow: inset 0 0 0 1px var(--line);
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+}
+
+.before,
+.now {
+  padding: 28px 24px;
+}
+
+.before {
+  color: var(--fog);
+  border-right: 1px solid var(--line);
+}
+
+.now {
+  background: linear-gradient(160deg, rgba(255, 49, 88, 0.14), rgba(59, 130, 255, 0.18));
+  color: var(--bone);
+}
+
+.sideTitle {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.before .list li {
+  text-decoration: line-through;
+  text-decoration-color: rgba(142, 152, 184, 0.55);
+}
+
+.now .list li {
+  font-weight: 600;
+}
+
+/* ---------- What the portal does ---------- */
+.capabilities {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: clamp(48px, 7vw, 88px) 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.capability {
+  padding: 28px 24px 0 0;
+}
+
+.capability + .capability {
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+
+.capability dt {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.capability dd {
+  margin: 0;
+  color: var(--fog);
+  line-height: 1.55;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .capabilities {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .capability:nth-child(3) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .capability:nth-child(n + 3) {
+    padding-top: 28px;
+    margin-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 560px) {
+  .versus {
+    grid-template-columns: 1fr;
+  }
+
+  .before {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .capabilities {
+    grid-template-columns: 1fr;
+  }
+
+  .capability,
+  .capability + .capability {
+    padding: 24px 0 0;
+    margin-top: 24px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .capability:first-child {
+    margin-top: 0;
+    border-top: 0;
+  }
+}

@@ -46,7 +46,7 @@ export function LoginForm() {
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      <h1 className={styles.title}>PromptArena Login</h1>
+      <h1 className={styles.title}>Log in to PromptArena</h1>
       <p className={styles.hint}>
         Use the user ID and password emailed to your team leader.
       </p>
@@ -84,7 +84,7 @@ export function LoginForm() {
       )}
 
       <button type="submit" className={styles.submit} disabled={submitting}>
-        {submitting ? "Signing in…" : "Sign in"}
+        {submitting ? "Logging in…" : "Log in"}
       </button>
     </form>
   );
