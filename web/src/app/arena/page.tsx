@@ -1,5 +1,6 @@
-import { PhasePlaceholder } from "@/components/common/PhasePlaceholder";
+import { Dashboard } from "@/components/dashboard/Dashboard";
 
+/** `/arena`: the team's event dashboard (handbook §4.1 "dynamic round router"). */
 export default function ArenaPage() {
-  return <PhasePlaceholder title="Arena — dynamic round router" route="/arena" phase={2} />;
+  return <Dashboard />;
 }

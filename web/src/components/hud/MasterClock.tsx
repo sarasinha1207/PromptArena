@@ -9,12 +9,11 @@ export function MasterClock() {
   const remainingMs = useMasterClock();
 
   return (
-    <div
-      className={`${styles.segment} ${styles.clock}`}
-      role="timer"
-      aria-label="Round time remaining"
-    >
-      {remainingMs === null ? "--:--:--" : formatCountdown(remainingMs)}
+    <div className={`${styles.segment} ${styles.clockWrap}`}>
+      <span className={styles.clockLabel}>Time left</span>
+      <span className={styles.clock} role="timer" aria-label="Round time remaining">
+        {remainingMs === null ? "--:--:--" : formatCountdown(remainingMs)}
+      </span>
     </div>
   );
 }

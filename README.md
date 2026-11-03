@@ -117,6 +117,8 @@ isolated in one file so it is easy to change.
 | WebSocket message envelope | `{ "event": "...", "data": {...} }`; `pong` carries `server_epoch` at top level | `web/src/lib/realtime/gateway.ts` |
 | State-change payload | `{ state, current_round, target_end_epoch }` (epoch ms) | `web/src/types/tournament.ts` |
 | WebSocket authentication | Not defined — socket currently connects without credentials | `web/src/lib/realtime/gateway.ts` |
+| Team leader and members | `GET /api/teams/me` returns `leader_name`, `leader_verified` and `roster` (array of `{ name, is_leader }` or plain names). The team menu and dashboard show only what the backend sends; nothing is filled in | `web/src/types/api.ts`, `web/src/lib/team/roster.ts` |
+| Live rank | Read from `rank` in the profile for now. It will update live once the leaderboard (Phase 4) consumes `SCORE_BATCH_UPDATE` | `web/src/stores/authStore.ts` |
 | Register now | Links to `NEXT_PUBLIC_REGISTRATION_URL` (the coordinator's form, shared later); until it is set, shows a notice | `web/src/lib/config.ts`, `web/.env.example` |
 | Forgot password | No reset endpoint in the handbook, so it tells teams to ask the event coordinator (optional `NEXT_PUBLIC_SUPPORT_EMAIL`) | `web/src/components/auth/LoginForm.tsx` |
 | Session token storage | `localStorage` | `web/src/lib/auth/tokenStorage.ts` |

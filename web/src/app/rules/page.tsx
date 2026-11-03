@@ -1,3 +1,4 @@
+import { EventBackdrop } from "@/components/dashboard/EventBackdrop";
 import styles from "./rules.module.css";
 
 /**
@@ -7,6 +8,7 @@ import styles from "./rules.module.css";
 export default function RulesPage() {
   return (
     <article className={styles.page}>
+      <EventBackdrop />
       <h1>Rules of Engagement</h1>
 
       <section>

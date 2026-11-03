@@ -27,9 +27,15 @@ const USERS = {
     password: "arena123",
     profile: {
       team_id: 7,
-      team_name: "Team Cipher",
+      team_name: "Test Team",
       role: "team",
+      leader_name: "Test Leader",
       leader_verified: true,
+      roster: [
+        { name: "Test Leader", is_leader: true },
+        { name: "Test Member Two" },
+        { name: "Test Member Three" },
+      ],
       token_budget: 100000,
       token_used: 57500,
       rank: 4,

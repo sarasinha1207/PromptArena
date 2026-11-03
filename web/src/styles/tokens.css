@@ -9,19 +9,19 @@
   --font-mono: var(--font-mono-loaded), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 
   /* In-event neutral palette */
-  --color-bg: #0b0f17;
-  --color-surface: #121826;
-  --color-surface-raised: #1a2236;
-  --color-border: #263149;
-  --color-text: #e6eaf2;
-  --color-muted: #8c98ad;
-  --color-accent: #4f8cff;
-  --color-ok: #2fbf71;
-  --color-warn: #f0b429;
-  --color-danger: #ef4444;
+  --color-bg: #060814;
+  --color-surface: #0d1330;
+  --color-surface-raised: #141b3f;
+  --color-border: rgba(238, 241, 251, 0.12);
+  --color-text: #eef1fb;
+  --color-muted: #8e98b8;
+  --color-accent: #3b82ff;
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-danger: #ff4d6a;
 
-  --radius: 8px;
-  --hud-height: 64px;
+  --radius: 14px;
+  --hud-height: 68px;
 
   /* Landing "arena" palette: red team vs blue team */
   --violet: #8a3dff;

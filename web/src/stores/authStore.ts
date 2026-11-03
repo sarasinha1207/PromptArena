@@ -29,12 +29,13 @@ function applyProfile(profile: TeamProfile): void {
   walletStore.setState({
     budget: profile.token_budget ?? 0,
     used: profile.token_used ?? 0,
+    loaded: typeof profile.token_budget === "number",
   });
 }
 
 function setAnonymous(): void {
   authStore.setState({ status: "anonymous", profile: null, role: null });
-  walletStore.setState({ budget: 0, used: 0 });
+  walletStore.setState({ budget: 0, used: 0, loaded: false });
   resetTournamentState();
 }
 

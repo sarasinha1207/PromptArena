@@ -1,0 +1,82 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ink);
+}
+
+.orb {
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  max-width: 720px;
+  max-height: 720px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  will-change: transform;
+}
+
+.red {
+  top: -14%;
+  left: -12%;
+  background: radial-gradient(circle, var(--breach), transparent 66%);
+  animation: sway-a 20s ease-in-out infinite alternate;
+}
+
+.blue {
+  bottom: -18%;
+  right: -12%;
+  background: radial-gradient(circle, var(--shield), transparent 66%);
+  animation: sway-b 24s ease-in-out infinite alternate;
+}
+
+.violet {
+  top: 30%;
+  left: 40%;
+  opacity: 0.28;
+  background: radial-gradient(circle, var(--violet), transparent 66%);
+  animation: sway-c 28s ease-in-out infinite alternate;
+}
+
+.grid {
+  position: absolute;
+  inset: -64px;
+  background-image:
+    linear-gradient(rgba(238, 241, 251, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 241, 251, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(80% 70% at 50% 30%, #000, transparent 85%);
+  -webkit-mask-image: radial-gradient(80% 70% at 50% 30%, #000, transparent 85%);
+  animation: grid-pan 30s linear infinite;
+}
+
+@keyframes sway-a {
+  to {
+    transform: translate(20vw, 16vh) scale(1.15);
+  }
+}
+@keyframes sway-b {
+  to {
+    transform: translate(-18vw, -12vh) scale(1.12);
+  }
+}
+@keyframes sway-c {
+  to {
+    transform: translate(-14vw, 14vh) scale(0.85);
+  }
+}
+@keyframes grid-pan {
+  to {
+    transform: translate(64px, 64px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .grid {
+    animation: none;
+  }
+}

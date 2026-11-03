@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { LogoMark } from "@/components/landing/LogoMark";
 import { useStore } from "@/stores/createStore";
 import { tournamentStore } from "@/stores/tournamentStore";
 import { getRoundLabel } from "@/lib/tournament/labels";
@@ -11,9 +13,12 @@ export function BrandRound() {
   const currentRound = useStore(tournamentStore, (s) => s.currentRound);
 
   return (
-    <div className={`${styles.segment} ${styles.brand}`}>
-      <span className={styles.logo}>PromptArena</span>
-      <span className={styles.round}>{getRoundLabel(state, currentRound)}</span>
-    </div>
+    <Link href="/arena" className={`${styles.segment} ${styles.brand}`} aria-label="Event dashboard">
+      <LogoMark size={34} />
+      <span className={styles.brandText}>
+        <span className={styles.logo}>PromptArena</span>
+        <span className={styles.round}>{getRoundLabel(state, currentRound)}</span>
+      </span>
+    </Link>
   );
 }

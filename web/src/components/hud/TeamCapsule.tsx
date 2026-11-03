@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronDownIcon, LogoutIcon, TrophyIcon } from "@/components/common/Icons";
+import { getInitials, getLeaderName, getRoster } from "@/lib/team/roster";
 import { useStore } from "@/stores/createStore";
 import { authStore, logout } from "@/stores/authStore";
 import styles from "./hud.module.css";
 
 /**
- * HUD right: dropdown with team handle, verified leader status, live rank and
- * logout (handbook §4.2).
+ * HUD right: team menu with the team name, team leader, every member, live
+ * rank and logout (handbook §4.2). Only real profile data is shown.
  */
 export function TeamCapsule() {
   const router = useRouter();
@@ -21,11 +23,21 @@ export function TeamCapsule() {
     const onMouseDown = (event: MouseEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
     };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
     document.addEventListener("mousedown", onMouseDown);
-    return () => document.removeEventListener("mousedown", onMouseDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onMouseDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
   }, [open]);
 
   if (!profile) return null;
+
+  const roster = getRoster(profile);
+  const leaderName = getLeaderName(profile);
 
   const handleLogout = () => {
     logout();
@@ -38,33 +50,62 @@ export function TeamCapsule() {
         type="button"
         className={styles.capsuleButton}
         aria-expanded={open}
-        aria-haspopup="menu"
+        aria-haspopup="true"
         onClick={() => setOpen((value) => !value)}
       >
-        <span>{profile.team_name}</span>
-        <span aria-hidden="true">▾</span>
+        <span className={styles.avatar}>{getInitials(profile.team_name)}</span>
+        <span className={styles.capsuleName}>{profile.team_name}</span>
+        <ChevronDownIcon className={styles.chevron} width={16} height={16} />
       </button>
 
       {open && (
-        <div className={styles.menu} role="menu">
-          <div className={styles.menuRow}>
-            <span className={styles.menuLabel}>Team</span>
-            <span>{profile.team_name}</span>
+        <div className={styles.menu} aria-label="Team menu">
+          <div className={styles.menuHead}>
+            <span className={styles.avatarLarge}>{getInitials(profile.team_name)}</span>
+            <div className={styles.teamBlock}>
+              <p className={styles.teamName}>{profile.team_name}</p>
+              <p className={styles.teamSub}>Team name</p>
+            </div>
+            <div className={styles.rank} title="Live rank">
+              <span className={styles.rankValue}>
+                <TrophyIcon width={15} height={15} />
+                {profile.rank != null ? `#${profile.rank}` : "Unranked"}
+              </span>
+              <span className={styles.rankLabel}>Live rank</span>
+            </div>
           </div>
-          <div className={styles.menuRow}>
-            <span className={styles.menuLabel}>Leader</span>
-            <span>{profile.leader_verified ? "Verified" : "Not verified"}</span>
+
+          <div className={styles.section}>
+            <p className={styles.sectionLabel}>Team leader</p>
+            <p className={styles.sectionValue}>
+              {leaderName ?? <span className={styles.muted}>Not provided</span>}
+              {leaderName && profile.leader_verified && (
+                <span className={styles.verified}>Verified</span>
+              )}
+            </p>
           </div>
-          <div className={styles.menuRow}>
-            <span className={styles.menuLabel}>Live rank</span>
-            <span>{profile.rank != null ? `#${profile.rank}` : "—"}</span>
+
+          <div className={styles.section}>
+            <p className={styles.sectionLabel}>
+              Members{roster.length > 0 ? ` (${roster.length})` : ""}
+            </p>
+            {roster.length > 0 ? (
+              <ul className={styles.members}>
+                {roster.map((member) => (
+                  <li key={member.name} className={styles.member}>
+                    <span className={styles.avatar}>{getInitials(member.name)}</span>
+                    <span>{member.name}</span>
+                    {member.isLeader && <span className={styles.leaderTag}>Leader</span>}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className={`${styles.sectionValue} ${styles.muted}`}>No members listed yet.</p>
+            )}
           </div>
-          <button
-            type="button"
-            className={styles.logout}
-            role="menuitem"
-            onClick={handleLogout}
-          >
+
+          <button type="button" className={styles.logout} onClick={handleLogout}>
+            <LogoutIcon width={18} height={18} />
             Log out
           </button>
         </div>
