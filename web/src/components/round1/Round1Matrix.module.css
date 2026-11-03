@@ -10,11 +10,13 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-  gap: 22px;
+  column-gap: 22px;
+  row-gap: 0;
 }
 
 .skeleton {
   min-height: 420px;
+  margin-bottom: 22px;
   border-radius: 24px;
   background: rgba(238, 241, 251, 0.06);
   animation: skeleton 1.4s ease-in-out infinite;

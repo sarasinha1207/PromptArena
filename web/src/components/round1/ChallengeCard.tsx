@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, type CSSProperties } from "react";
+import { TrophyIcon } from "@/components/common/Icons";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { getInitials } from "@/lib/team/roster";
@@ -89,11 +90,17 @@ export function ChallengeCard({ challenge, open, closedReason, index }: Challeng
           </div>
         </div>
 
-        {/* ---------- Mission details ---------- */}
-        <div className={styles.body}>
+        {/* ---------- Mission details ----------
+            These are direct grid rows of the card, so title, lore, chips, stats and
+            actions line up across every card in the same row of the matrix. */}
+        <>
           <h2 className={styles.title}>{challenge.title}</h2>
 
-          {challenge.narrative && <p className={styles.narrative}>{challenge.narrative}</p>}
+          {challenge.narrative && (
+            <p className={styles.narrative} title={challenge.narrative}>
+              {challenge.narrative}
+            </p>
+          )}
 
           {(specs || defenses.length > 0) && (
             <ul className={styles.specs} aria-label="Target model">
@@ -111,19 +118,22 @@ export function ChallengeCard({ challenge, open, closedReason, index }: Challeng
           )}
 
           <section className={styles.telemetry} aria-label="Solve telemetry">
-            <p>
-              <strong>{challenge.solve_count.toLocaleString("en-US")}</strong>{" "}
-              {challenge.solve_count === 1 ? "solve" : "solves"}
-            </p>
-            <p>
-              <strong>{challenge.attempt_count.toLocaleString("en-US")}</strong>{" "}
-              {challenge.attempt_count === 1 ? "attempt" : "attempts"}
-            </p>
+            <div className={styles.stats}>
+              <p className={styles.stat}>
+                <strong>{challenge.solve_count.toLocaleString("en-US")}</strong>
+                <span>Solves</span>
+              </p>
+              <p className={styles.stat}>
+                <strong>{challenge.attempt_count.toLocaleString("en-US")}</strong>
+                <span>Attempts</span>
+              </p>
+            </div>
             <p
               className={styles.firstBlood}
               data-claimed={Boolean(challenge.first_blood_team)}
               title="The first team to solve earns a permanent +50 bonus."
             >
+              <TrophyIcon width={16} height={16} />
               {challenge.first_blood_team
                 ? `First Blood: ${challenge.first_blood_team}`
                 : "First Blood unclaimed"}
@@ -141,7 +151,7 @@ export function ChallengeCard({ challenge, open, closedReason, index }: Challeng
               Launch terminal
             </Link>
           </footer>
-        </div>
+        </>
       </article>
     </ThemeProvider>
   );
