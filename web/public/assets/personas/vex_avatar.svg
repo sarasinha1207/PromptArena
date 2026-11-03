@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" fill="none">
+  <defs>
+    <linearGradient id="jacket" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241d4a"/>
+      <stop offset="1" stop-color="#0c0a1f"/>
+    </linearGradient>
+    <linearGradient id="hood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2458"/>
+      <stop offset="1" stop-color="#120f2c"/>
+    </linearGradient>
+    <linearGradient id="visor" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff4d8d"/>
+      <stop offset="0.55" stop-color="#ff7ac0"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9aa3c7"/>
+      <stop offset="1" stop-color="#5d6590"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-80%" width="160%" height="260%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <!-- neon rim behind the hood -->
+  <path d="M50 330C28 200 80 56 160 56s132 144 110 274Z" fill="#ff4d8d" opacity="0.32" filter="url(#glow)"/>
+
+  <!-- jacket and high collar -->
+  <path d="M4 400C4 332 58 296 160 296s156 36 156 104Z" fill="url(#jacket)"/>
+  <path d="M96 298 124 360 160 330 196 360 224 298" stroke="#ff4d8d" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M30 352 70 322M290 352 250 322" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+  <path d="M40 400 60 360h36M280 400 260 360h-36" stroke="#ff4d8d" stroke-opacity="0.7" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- neck cables -->
+  <path d="M138 276v34M182 276v34M160 280v40" stroke="#4a4f7d" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="138" cy="312" r="4" fill="#22d3ee"/><circle cx="182" cy="312" r="4" fill="#ff4d8d"/>
+
+  <!-- hood -->
+  <path d="M52 330C30 200 82 58 160 58s130 142 108 272Z" fill="url(#hood)"/>
+  <path d="M52 330C30 200 82 58 160 58s130 142 108 272" stroke="#ff4d8d" stroke-width="4" stroke-linecap="round"/>
+  <path d="M86 304C72 206 106 98 160 98s88 108 74 206Z" fill="#07061a"/>
+
+  <!-- face -->
+  <rect x="100" y="132" width="120" height="148" rx="52" fill="url(#skin)"/>
+  <path d="M100 218q60 20 120 0v26q0 36-60 40t-60-40Z" fill="#1a1838"/>
+  <path d="M122 232h76M126 246h68M132 260h56" stroke="#ff4d8d" stroke-opacity="0.8" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- cyber implant on the temple -->
+  <path d="M206 150h22l6 18v38" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="234" cy="206" r="5" fill="#22d3ee"/>
+  <circle cx="228" cy="150" r="4" fill="#ff4d8d"/>
+
+  <!-- visor with glow -->
+  <rect x="92" y="156" width="136" height="38" rx="19" fill="url(#visor)" opacity="0.7" filter="url(#glow)"/>
+  <rect x="92" y="156" width="136" height="38" rx="19" fill="#0d0b24"/>
+  <rect x="98" y="161" width="124" height="28" rx="14" fill="url(#visor)"/>
+  <path d="M112 168q40-8 96 0" stroke="#fff" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round"/>
+  <rect x="150" y="161" width="3" height="28" fill="#0d0b24" opacity="0.5"/>
+</svg>

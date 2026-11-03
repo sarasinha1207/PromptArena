@@ -1,5 +1,5 @@
-import { PhasePlaceholder } from "@/components/common/PhasePlaceholder";
+import { Round1Matrix } from "@/components/round1/Round1Matrix";
 
 export default function Round1MatrixPage() {
-  return <PhasePlaceholder title="Round 1 — Challenge Matrix" route="/arena/round-1" phase={2} />;
+  return <Round1Matrix />;
 }

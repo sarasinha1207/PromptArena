@@ -1,0 +1,32 @@
+.lobby {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 560px;
+  margin: clamp(80px, 22vh, 220px) auto 0;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.text {
+  margin: 0;
+  color: var(--fog);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.loading {
+  margin: 120px 0 0;
+  text-align: center;
+  color: var(--fog);
+}

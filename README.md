@@ -19,6 +19,10 @@ PromptArena/
 │       │   └── admin/           dashboard/, challenges/, teams/, broadcast/
 │       ├── components/
 │       │   ├── landing/         Public site: header, hero, about, rounds, levels, rulebook, footer
+│       │   ├── arena/           `/arena` round router
+│       │   ├── round1/          Challenge matrix, level card, quick flag submit
+│       │   ├── theme/           Persona ThemeProvider
+│       │   ├── dashboard/       Shared in-event background
 │       │   ├── hud/             Persistent in-event top bar (§4.2)
 │       │   ├── overlays/        Pause banner (§5)
 │       │   ├── auth/            LoginForm, RequireAuth route guard
@@ -70,7 +74,7 @@ curl -X POST localhost:4000/api/admin/tournament/state -H "Authorization: Bearer
 | Phase (handbook §14) | Status |
 |---|---|
 | 1. Shell, Auth & Top Bar | Built — see below |
-| 2. Round 1 matrix & persona theming | Not started |
+| 2. Round 1 matrix & persona theming | Built — see below |
 | 3. Chat workbench | Not started |
 | 4. Leaderboard | Not started |
 | 5. Round 2 & Round 3 | Not started |
@@ -84,6 +88,27 @@ curl -X POST localhost:4000/api/admin/tournament/state -H "Authorization: Bearer
 - WebSocket hook for tournament state, including the full-screen pause banner and resume.
 - Server-time clock sync (30 s ping/pong, `drift_offset = server_epoch + rtt/2 − t1`).
 - `/rules` page (content from §2).
+
+### Phase 2 scope (handbook §14, Sprint 2)
+- `/arena` is the dynamic round router: it sends the team to the active round from the tournament state.
+  Before the event starts the arena is locked and it shows a short waiting message (§5).
+- `/arena/round-1`: the challenge matrix. Each level card shows the level code, title, difficulty badge,
+  dynamic points (the number eases down when a level decays), persona and lore, model specs and known
+  defenses, solve and attempt counters, the First Blood pill, a quick flag box, Launch terminal and a Solved
+  badge (§6.1). Nothing is pre-filled: loading, empty and error states are shown instead of placeholder cards.
+- Quick flag submit sends the flag to the server, enforces the 15 s wrong-flag cooldown from `cooldown_until`,
+  keeps it in `localStorage` so a refresh cannot clear it (§2.5, §13.3), and locks while the round is paused or ended.
+- Each level card opens with a character stage: the persona portrait on a glowing, themed backdrop, with the
+  level number, difficulty, points and persona name over it. Portraits are `avatar_url` from the level's
+  `theme_config` (§3.2). Five illustrated placeholders are in `web/public/assets/personas/`; UI/UX can replace
+  them with final art at the same paths. If an image is missing, the card shows the persona's initials instead.
+- Theme Provider (`web/src/components/theme/ThemeProvider.tsx`): a level's `theme_id` picks its colours and fonts
+  from `web/src/lib/theme/personaThemes.ts`. An unknown `theme_id` falls back to a neutral theme.
+- `CHALLENGE_DEPLOYED` and `SCORE_BATCH_UPDATE` gateway events re-fetch the matrix (§12.6).
+- The Round 1 matrix is read-only after the round ends; `/arena/round-1` redirects to `/arena` before the event starts.
+
+Mock backend only: `npm start` in `mock-server` prints test flags for `team07` so you can try the flag box.
+Counters start at zero and change only when a flag is submitted.
 
 ## Public landing page (added on request, outside the handbook's route list)
 
@@ -121,6 +146,10 @@ isolated in one file so it is easy to change.
 | Live rank | Read from `rank` in the profile for now. It will update live once the leaderboard (Phase 4) consumes `SCORE_BATCH_UPDATE` | `web/src/stores/authStore.ts` |
 | Register now | Links to `NEXT_PUBLIC_REGISTRATION_URL` (the coordinator's form, shared later); until it is set, shows a notice | `web/src/lib/config.ts`, `web/.env.example` |
 | Forgot password | No reset endpoint in the handbook, so it tells teams to ask the event coordinator (optional `NEXT_PUBLIC_SUPPORT_EMAIL`) | `web/src/components/auth/LoginForm.tsx` |
+| List of levels | `GET /api/arena/levels` returns an array (or `{ levels: [...] }`) of `{ id, round_number, level_index, title, persona_name, difficulty, theme_config, narrative, model_specs, known_defenses, current_points, solve_count, attempt_count, first_blood_team, is_solved }`. §12 defines no such endpoint | `web/src/lib/api/arena.ts`, `web/src/types/arena.ts` |
+| Persona `theme_id` values | `claire_corporate_hr`, `ignatius_iron_archive`, `vector88_arcade`, `vex_underworld_broker`, `aura7_frigate` (only `vex_underworld_broker` appears in §3.2) | `web/src/lib/theme/personaThemes.ts` |
+| Flag error body | A wrong flag returns 400 with `reason` and `cooldown_until`; a locked flag box may also return another status with `cooldown_until` | `web/src/components/round1/FlagQuickSubmit.tsx` |
+| Difficulty names | Five tiers (Novice, Adept, Adept+, Master, Insane). §6.1 lists only four badges | `web/src/components/round1/ChallengeCard.module.css` |
 | Session token storage | `localStorage` | `web/src/lib/auth/tokenStorage.ts` |
 | Pause states | Only `ROUND_1_PAUSED` exists in §5, so only it triggers the pause banner | `web/src/lib/tournament/labels.ts` |
 | Status badge | Shown only for LIVE / PAUSED / FROZEN (the three in §4.2); other states show no badge | `web/src/lib/tournament/labels.ts` |

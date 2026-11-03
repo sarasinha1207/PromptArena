@@ -4,12 +4,15 @@ import { readToken } from "@/lib/auth/tokenStorage";
 export class ApiError extends Error {
   readonly status: number;
   readonly reason?: string;
+  /** Parsed JSON error body, e.g. to read `cooldown_until` (handbook §2.5). */
+  readonly body: unknown;
 
-  constructor(status: number, message: string, reason?: string) {
+  constructor(status: number, message: string, reason?: string, body: unknown = null) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.reason = reason;
+    this.body = body;
   }
 }
 
@@ -68,6 +71,7 @@ export async function apiFetch<T>(
       response.status,
       errorBody?.message ?? `Request failed (${response.status}).`,
       errorBody?.reason,
+      payload,
     );
   }
 

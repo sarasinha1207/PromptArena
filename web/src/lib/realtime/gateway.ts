@@ -4,6 +4,7 @@ import {
   applyTournamentStateChange,
   tournamentStore,
 } from "@/stores/tournamentStore";
+import { scheduleChallengeRefresh } from "@/stores/challengesStore";
 import { isTournamentState } from "@/types/tournament";
 
 const MAX_RECONNECT_DELAY_MS = 10_000;
@@ -11,9 +12,9 @@ const MAX_RECONNECT_DELAY_MS = 10_000;
 /**
  * Client for the central WebSocket gateway `/ws/tournament` (handbook §5, §12.6).
  *
- * Phase 1 handles: heartbeat ping/pong (clock calibration) and
- * TOURNAMENT_STATE_CHANGE. The remaining gateway events (SCORE_BATCH_UPDATE,
- * FIRST_BLOOD_ALERT, CHALLENGE_DEPLOYED, GLOBAL_ANNOUNCEMENT,
+ * Handles: heartbeat ping/pong (clock calibration), TOURNAMENT_STATE_CHANGE,
+ * and CHALLENGE_DEPLOYED / SCORE_BATCH_UPDATE (re-fetch the level matrix).
+ * The remaining gateway events (FIRST_BLOOD_ALERT, GLOBAL_ANNOUNCEMENT,
  * INBOUND_ATTACK_TELEMETRY) are ignored until the phases that consume them.
  *
  * NOTE: the handbook does not define how the socket authenticates. Add it in
@@ -93,6 +94,12 @@ export class TournamentGateway {
       if (typeof server_epoch !== "number" || this.pingSentAt === null) return;
       applyClockSample(this.pingSentAt, Date.now(), server_epoch);
       this.pingSentAt = null;
+      return;
+    }
+
+    // New level released, or scores moved: re-fetch the matrix (handbook §12.6).
+    if (event === "CHALLENGE_DEPLOYED" || event === "SCORE_BATCH_UPDATE") {
+      scheduleChallengeRefresh();
       return;
     }
 

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" fill="none">
+  <defs>
+    <linearGradient id="blazer" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a6cc2"/>
+      <stop offset="1" stop-color="#162b57"/>
+    </linearGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#b4d0f2"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16346b"/>
+      <stop offset="1" stop-color="#0b1a3d"/>
+    </linearGradient>
+    <radialGradient id="cheek" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff9ec4" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ff9ec4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- shoulders and blazer -->
+  <path d="M6 400C6 334 60 298 160 298s154 36 154 102Z" fill="url(#blazer)"/>
+  <path d="M118 300 160 376 202 300Z" fill="#f4f8ff"/>
+  <path d="M118 300 160 376 108 400H44l50-86Z" fill="#2a54a0"/>
+  <path d="M202 300 160 376 212 400h64l-50-86Z" fill="#2a54a0"/>
+  <path d="M153 326h14l7 66-14 10-14-10Z" fill="#4da3ff"/>
+
+  <!-- id badge on a lanyard -->
+  <path d="M236 318 222 372" stroke="#7fb4ff" stroke-width="4" stroke-linecap="round"/>
+  <rect x="200" y="360" width="46" height="34" rx="7" fill="#fff"/>
+  <rect x="208" y="368" width="14" height="14" rx="4" fill="#4da3ff"/>
+  <rect x="226" y="369" width="14" height="4" rx="2" fill="#9db8dd"/>
+  <rect x="226" y="377" width="10" height="4" rx="2" fill="#9db8dd"/>
+
+  <!-- neck -->
+  <rect x="136" y="262" width="48" height="44" rx="12" fill="#8fb0dc"/>
+
+  <!-- headset band (behind head) -->
+  <path d="M68 190C68 108 118 74 160 74s92 34 92 116" stroke="#2a4f8f" stroke-width="11" stroke-linecap="round"/>
+
+  <!-- antenna -->
+  <path d="M160 96V60" stroke="#2a4f8f" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="160" cy="52" r="12" fill="#4da3ff"/>
+  <circle cx="156" cy="48" r="4" fill="#cfe6ff"/>
+
+  <!-- head -->
+  <rect x="76" y="98" width="168" height="176" rx="74" fill="url(#head)"/>
+  <rect x="76" y="98" width="168" height="176" rx="74" stroke="#9cc0ee" stroke-width="2"/>
+
+  <!-- ear pads -->
+  <rect x="54" y="160" width="28" height="60" rx="13" fill="#2a4f8f"/>
+  <rect x="238" y="160" width="28" height="60" rx="13" fill="#2a4f8f"/>
+
+  <!-- microphone arm -->
+  <path d="M66 214c4 38 44 52 76 46" stroke="#2a4f8f" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="146" cy="260" r="10" fill="#4da3ff"/>
+
+  <!-- face screen -->
+  <rect x="96" y="128" width="128" height="106" rx="44" fill="url(#screen)"/>
+  <rect x="96" y="128" width="128" height="106" rx="44" stroke="#4da3ff" stroke-opacity="0.5" stroke-width="2"/>
+  <ellipse cx="116" cy="204" rx="16" ry="10" fill="url(#cheek)"/>
+  <ellipse cx="204" cy="204" rx="16" ry="10" fill="url(#cheek)"/>
+  <path d="M124 178q13-18 26 0M170 178q13-18 26 0" stroke="#7fe8ff" stroke-width="8" stroke-linecap="round"/>
+  <path d="M132 204q28 26 56 0" stroke="#7fe8ff" stroke-width="7" stroke-linecap="round"/>
+  <path d="M104 150q14-12 34-14" stroke="#fff" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+</svg>

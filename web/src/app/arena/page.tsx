@@ -1,6 +1,6 @@
-import { Dashboard } from "@/components/dashboard/Dashboard";
+import { ArenaRouter } from "@/components/arena/ArenaRouter";
 
-/** `/arena`: the team's event dashboard (handbook §4.1 "dynamic round router"). */
+/** `/arena`: dynamic round router (handbook §4.1). */
 export default function ArenaPage() {
-  return <Dashboard />;
+  return <ArenaRouter />;
 }

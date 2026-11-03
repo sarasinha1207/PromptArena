@@ -1,6 +1,7 @@
 import { createStore } from "@/stores/createStore";
 import { walletStore } from "@/stores/walletStore";
 import { resetTournamentState } from "@/stores/tournamentStore";
+import { resetChallenges } from "@/stores/challengesStore";
 import { fetchMyProfile, loginRequest } from "@/lib/api/auth";
 import { ApiError, setUnauthorizedHandler } from "@/lib/api/client";
 import { clearToken, readToken, writeToken } from "@/lib/auth/tokenStorage";
@@ -37,6 +38,7 @@ function setAnonymous(): void {
   authStore.setState({ status: "anonymous", profile: null, role: null });
   walletStore.setState({ budget: 0, used: 0, loaded: false });
   resetTournamentState();
+  resetChallenges();
 }
 
 /** Restores a session from a stored token on page load. */

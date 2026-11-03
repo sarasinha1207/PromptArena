@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" fill="none">
+  <defs>
+    <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b4a2a"/>
+      <stop offset="1" stop-color="#2c1c0e"/>
+    </linearGradient>
+    <linearGradient id="hood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a5632"/>
+      <stop offset="1" stop-color="#3a2614"/>
+    </linearGradient>
+    <linearGradient id="feather" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff3cf"/>
+      <stop offset="1" stop-color="#e0b255"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0.55" stop-color="#e0b255" stop-opacity="0"/>
+      <stop offset="0.8" stop-color="#e0b255" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#e0b255" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- halo glow -->
+  <circle cx="160" cy="170" r="150" fill="url(#halo)"/>
+
+  <!-- robe -->
+  <path d="M6 400C6 330 62 296 160 296s154 34 154 104Z" fill="url(#robe)"/>
+  <path d="M104 300 160 400 216 300Z" fill="#1d120a" opacity="0.55"/>
+  <path d="M110 298C128 330 142 364 146 400M210 298c-18 32-32 66-36 102" stroke="#8c6638" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- wooden cross on a cord -->
+  <path d="M130 304q30 70 60 0" stroke="#c9a15a" stroke-width="3" stroke-linecap="round"/>
+  <rect x="154" y="346" width="12" height="44" rx="3" fill="#e0b255"/>
+  <rect x="142" y="358" width="36" height="11" rx="3" fill="#e0b255"/>
+
+  <!-- hood back -->
+  <path d="M52 326C30 198 84 60 160 60s130 138 108 266Z" fill="url(#hood)"/>
+  <path d="M84 300C70 200 104 92 160 92s90 108 76 208Z" fill="#24160b" opacity="0.7"/>
+
+  <!-- face -->
+  <ellipse cx="160" cy="184" rx="60" ry="72" fill="#e8c69d"/>
+  <ellipse cx="160" cy="130" rx="52" ry="20" fill="#cfa87c" opacity="0.5"/>
+
+  <!-- beard -->
+  <path d="M102 196c0 70 28 116 58 124 30-8 58-54 58-124-18 30-38 38-58 38s-40-8-58-38Z" fill="#ece8de"/>
+  <path d="M120 238c14 10 26 14 40 14s26-4 40-14" stroke="#c9c3b4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M130 270c10 8 20 12 30 12s20-4 30-12" stroke="#c9c3b4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M130 222c10-12 20-14 30-6 10-8 20-6 30 6-14 8-24 8-30 2-6 6-16 6-30-2Z" fill="#f6f3ea"/>
+
+  <!-- brows, closed eyes, nose -->
+  <path d="M120 156q16-10 32 0M168 156q16-10 32 0" stroke="#f3efe6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M124 178q14 9 28 0M168 178q14 9 28 0" stroke="#5b4129" stroke-width="4" stroke-linecap="round"/>
+  <path d="M160 180c-6 12-6 20 0 22" stroke="#c79c70" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- hood rim -->
+  <path d="M84 300C70 200 104 92 160 92s90 108 76 208" stroke="#b98a4a" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- quill -->
+  <path d="M258 214c24-48 38-94 40-132-34 20-62 58-76 108l30 30Z" fill="url(#feather)"/>
+  <path d="M262 214c20-44 30-84 34-122" stroke="#9a7324" stroke-width="3" stroke-linecap="round"/>
+  <path d="M254 218 236 252" stroke="#9a7324" stroke-width="5" stroke-linecap="round"/>
+  <path d="M244 214c10-16 22-34 34-60M236 200c12-12 22-24 32-44" stroke="#fff" stroke-opacity="0.45" stroke-width="2"/>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" fill="none">
+  <defs>
+    <linearGradient id="cab" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a3df0"/>
+      <stop offset="1" stop-color="#2b1260"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9b5cff"/>
+      <stop offset="1" stop-color="#4a2192"/>
+    </linearGradient>
+    <radialGradient id="screenGlow" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="0" stop-color="#1c1a5e"/>
+      <stop offset="1" stop-color="#06051a"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- screen glow spilling out -->
+  <rect x="62" y="118" width="196" height="150" rx="22" fill="#22d3ee" opacity="0.35" filter="url(#soft)"/>
+
+  <!-- cabinet body -->
+  <path d="M40 400V112q0-48 52-48h136q52 0 52 48v288Z" fill="url(#cab)"/>
+  <path d="M40 400V112q0-48 52-48h136q52 0 52 48v288Z" stroke="#c4a0ff" stroke-opacity="0.5" stroke-width="2"/>
+  <path d="M58 120v280M262 120v280" stroke="#22d3ee" stroke-opacity="0.55" stroke-width="3"/>
+
+  <!-- marquee header with pixel lights -->
+  <rect x="64" y="76" width="192" height="34" rx="10" fill="#0d0830"/>
+  <g fill="#ff4dd8">
+    <rect x="80" y="88" width="10" height="10"/><rect x="100" y="88" width="10" height="10"/>
+    <rect x="120" y="88" width="10" height="10"/><rect x="140" y="88" width="10" height="10"/>
+    <rect x="160" y="88" width="10" height="10"/><rect x="180" y="88" width="10" height="10"/>
+    <rect x="200" y="88" width="10" height="10"/><rect x="220" y="88" width="10" height="10"/>
+  </g>
+  <g fill="#ffe14d">
+    <rect x="100" y="88" width="10" height="10"/><rect x="160" y="88" width="10" height="10"/><rect x="220" y="88" width="10" height="10"/>
+  </g>
+
+  <!-- screen -->
+  <rect x="72" y="126" width="176" height="140" rx="18" fill="url(#screenGlow)"/>
+  <rect x="72" y="126" width="176" height="140" rx="18" stroke="#0d0830" stroke-width="6"/>
+
+  <!-- pixel face -->
+  <g fill="#22d3ee">
+    <rect x="108" y="158" width="26" height="26"/>
+    <rect x="186" y="158" width="26" height="26"/>
+  </g>
+  <g fill="#ff4dd8" opacity="0.65">
+    <rect x="114" y="158" width="26" height="26"/>
+    <rect x="192" y="158" width="26" height="26"/>
+  </g>
+  <g fill="#ffe14d">
+    <rect x="108" y="212" width="12" height="12"/><rect x="200" y="212" width="12" height="12"/>
+    <rect x="120" y="224" width="12" height="12"/><rect x="188" y="224" width="12" height="12"/>
+    <rect x="132" y="232" width="56" height="12"/>
+  </g>
+  <!-- glitch slices -->
+  <rect x="72" y="190" width="176" height="6" fill="#22d3ee" opacity="0.5"/>
+  <rect x="84" y="250" width="120" height="4" fill="#ff4dd8" opacity="0.6"/>
+  <g stroke="#ffffff" stroke-opacity="0.07" stroke-width="2">
+    <path d="M72 140h176M72 154h176M72 168h176M72 182h176M72 196h176M72 210h176M72 224h176M72 238h176M72 252h176"/>
+  </g>
+
+  <!-- control panel -->
+  <path d="M52 290h216l16 52H36Z" fill="url(#panel)"/>
+  <circle cx="106" cy="312" r="16" fill="#1a0e42"/>
+  <rect x="102" y="288" width="8" height="26" rx="4" fill="#e5e7ff"/>
+  <circle cx="106" cy="284" r="13" fill="#ff3158"/>
+  <circle cx="102" cy="280" r="4" fill="#ffd0d8"/>
+  <circle cx="176" cy="316" r="12" fill="#22d3ee"/>
+  <circle cx="208" cy="308" r="12" fill="#ffe14d"/>
+  <circle cx="240" cy="316" r="12" fill="#ff4dd8"/>
+
+  <!-- coin slot -->
+  <rect x="124" y="356" width="72" height="30" rx="8" fill="#0d0830"/>
+  <rect x="150" y="364" width="20" height="14" rx="3" fill="#ffe14d"/>
+  <rect x="156" y="368" width="8" height="6" rx="2" fill="#0d0830"/>
+</svg>
