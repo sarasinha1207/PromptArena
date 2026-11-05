@@ -1,0 +1,212 @@
+/* One full-height card. Sections are separated by lines, not by separate boxes. */
+.card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 40% at 0% 0%, color-mix(in srgb, var(--theme-accent, #7c8cff) 26%, transparent), transparent 70%),
+    rgba(13, 19, 48, 0.88);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-accent, #7c8cff) 45%, transparent);
+}
+
+/* ---------- Persona: points and key facts ---------- */
+.persona {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 20px 10px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--theme-accent, #7c8cff) 20%, transparent),
+    transparent
+  );
+  border-bottom: 1px solid var(--line);
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar,
+.monogram {
+  flex: none;
+  width: 64px;
+  height: 72px;
+  filter: drop-shadow(0 6px 12px color-mix(in srgb, var(--theme-accent, #7c8cff) 50%, rgba(0, 0, 0, 0.5)));
+}
+
+.avatar {
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.monogram {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  color: #08091a;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--theme-accent, #7c8cff), color-mix(in srgb, var(--theme-accent, #7c8cff) 50%, #fff));
+}
+
+.heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.level {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px;
+  color: var(--theme-accent, #7c8cff);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.tier {
+  padding: 1px 9px;
+  color: var(--bone);
+  border-radius: 999px;
+  background: rgba(6, 8, 20, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(238, 241, 251, 0.25);
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.archetype {
+  margin: 2px 0 0;
+  color: rgba(238, 241, 251, 0.78);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.target {
+  margin: 2px 0 0;
+  overflow: hidden;
+  color: var(--fog);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.points {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 14px;
+  background: rgba(6, 8, 20, 0.6);
+  box-shadow: inset 0 0 0 1px rgba(255, 196, 71, 0.5);
+}
+
+.points strong {
+  color: var(--flag-gold);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.points span {
+  color: var(--fog);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ---------- Description and mission ---------- */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 0;
+  padding: 20px 22px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(238, 241, 251, 0.2) transparent;
+}
+
+.heading2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.about {
+  margin: 0;
+  color: rgba(238, 241, 251, 0.9);
+  font-family: var(--theme-font, var(--font-body));
+  font-style: var(--theme-font-style, normal);
+  font-size: calc(var(--theme-font-size, 1rem) * 1.04);
+  text-transform: var(--theme-font-transform, none);
+  line-height: 1.75;
+}
+
+.mission {
+  margin: 0;
+  padding-left: 14px;
+  color: rgba(238, 241, 251, 0.94);
+  font-size: 1rem;
+  line-height: 1.7;
+  border-left: 3px solid var(--theme-accent, var(--shield));
+}
+
+.policy {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 12px 0 0;
+  color: var(--flag-gold);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.policy svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.policy code {
+  font-family: var(--font-mono);
+}
+
+.specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.specs li {
+  padding: 5px 12px;
+  color: var(--fog);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: rgba(238, 241, 251, 0.06);
+  box-shadow: inset 0 0 0 1px var(--line);
+}

@@ -5,6 +5,7 @@ import { resetChallenges } from "@/stores/challengesStore";
 import { fetchMyProfile, loginRequest } from "@/lib/api/auth";
 import { ApiError, setUnauthorizedHandler } from "@/lib/api/client";
 import { clearToken, readToken, writeToken } from "@/lib/auth/tokenStorage";
+import { abortAllStreams } from "@/lib/sse/streamRegistry";
 import type { TeamProfile, UserRole } from "@/types/api";
 
 export type AuthStatus = "loading" | "authenticated" | "anonymous";
@@ -35,6 +36,7 @@ function applyProfile(profile: TeamProfile): void {
 }
 
 function setAnonymous(): void {
+  abortAllStreams();
   authStore.setState({ status: "anonymous", profile: null, role: null });
   walletStore.setState({ budget: 0, used: 0, loaded: false });
   resetTournamentState();

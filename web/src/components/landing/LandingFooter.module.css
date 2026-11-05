@@ -92,7 +92,6 @@
   -webkit-text-stroke: 1px rgba(238, 241, 251, 0.14);
   user-select: none;
   white-space: nowrap;
-  animation: wordmark-flow 9s linear infinite;
 }
 
 @keyframes wordmark-flow {

@@ -14,7 +14,6 @@
   max-width: 720px;
   max-height: 720px;
   border-radius: 50%;
-  filter: blur(100px);
   opacity: 0.5;
   will-change: transform;
 }
@@ -50,7 +49,6 @@
   background-size: 64px 64px;
   mask-image: radial-gradient(80% 70% at 50% 30%, #000, transparent 85%);
   -webkit-mask-image: radial-gradient(80% 70% at 50% 30%, #000, transparent 85%);
-  animation: grid-pan 30s linear infinite;
 }
 
 @keyframes sway-a {

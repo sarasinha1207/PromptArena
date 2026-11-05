@@ -1,5 +1,18 @@
 import { apiFetch } from "@/lib/api/client";
-import type { Challenge, FlagSuccess } from "@/types/arena";
+import type { Challenge, FlagSuccess, SessionPayload } from "@/types/arena";
+
+/** GET /api/arena/levels/{id}/session: the active chat session and its history (assumed endpoint). */
+export function fetchSession(levelId: string | number): Promise<SessionPayload> {
+  return apiFetch<SessionPayload>(`/api/arena/levels/${levelId}/session`);
+}
+
+/**
+ * POST /api/arena/levels/{id}/session/reset (handbook §6.2): archives the
+ * session and the persona greets again. Points and attempts are unchanged.
+ */
+export function resetSession(levelId: string | number): Promise<SessionPayload> {
+  return apiFetch<SessionPayload>(`/api/arena/levels/${levelId}/session/reset`, { method: "POST" });
+}
 
 /**
  * GET /api/arena/levels. The handbook defines no endpoint for listing levels,

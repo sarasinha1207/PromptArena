@@ -28,7 +28,6 @@
   background-size: 84px 84px;
   transform: perspective(520px) rotateX(66deg);
   transform-origin: center bottom;
-  animation: floor-move 4s linear infinite;
 }
 
 .halo {
@@ -43,7 +42,6 @@
   transform: translateX(-50%);
   border-radius: 50%;
   background: radial-gradient(circle, rgba(138, 61, 255, 0.35), transparent 68%);
-  filter: blur(80px);
   animation: halo-breathe 8s ease-in-out infinite;
 }
 

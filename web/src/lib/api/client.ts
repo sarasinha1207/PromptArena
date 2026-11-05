@@ -23,6 +23,11 @@ export function setUnauthorizedHandler(handler: (() => void) | null): void {
   unauthorizedHandler = handler;
 }
 
+/** For callers that read responses themselves (streams): treat a 401 like any other API call. */
+export function notifyUnauthorized(): void {
+  unauthorizedHandler?.();
+}
+
 interface RequestOptions {
   method?: "GET" | "POST" | "PUT";
   body?: unknown;

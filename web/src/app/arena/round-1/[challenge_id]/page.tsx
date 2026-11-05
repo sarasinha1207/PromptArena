@@ -1,11 +1,10 @@
-import { PhasePlaceholder } from "@/components/common/PhasePlaceholder";
+import { Workbench } from "@/components/workbench/Workbench";
 
-export default function Round1WorkbenchPage() {
-  return (
-    <PhasePlaceholder
-      title="Round 1 — Adversarial Chat Workbench"
-      route="/arena/round-1/[challenge_id]"
-      phase={3}
-    />
-  );
+export default async function Round1WorkbenchPage({
+  params,
+}: {
+  params: Promise<{ challenge_id: string }>;
+}) {
+  const { challenge_id } = await params;
+  return <Workbench levelId={challenge_id} />;
 }

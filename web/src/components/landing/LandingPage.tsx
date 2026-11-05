@@ -27,7 +27,6 @@ const KEYWORDS = [
 export function LandingPage() {
   return (
     <div className={styles.page}>
-      <div className={styles.grain} aria-hidden="true" />
       <CursorGlow />
       <LandingHeader />
       <Hero />

@@ -57,6 +57,31 @@ export function ChevronDownIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function ShieldIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Icon {...props}>
+      <path d="M12 3 5 6v5c0 4.4 2.9 8.2 7 10 4.1-1.8 7-5.6 7-10V6l-7-3Z" />
+      <path d="m9.2 12 2 2 3.6-4" />
+    </Icon>
+  );
+}
+
+export function SendIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Icon {...props}>
+      <path d="m4 12 16-8-6 16-2.6-6.4L4 12Z" />
+    </Icon>
+  );
+}
+
+export function RefreshIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Icon {...props}>
+      <path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" />
+    </Icon>
+  );
+}
+
 export function ArrowRightIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <Icon {...props}>

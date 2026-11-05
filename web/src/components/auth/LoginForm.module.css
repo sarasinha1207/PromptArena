@@ -6,14 +6,15 @@
   gap: 20px;
   padding: 36px 34px 34px;
   background: rgba(13, 19, 48, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border-radius: 26px;
   animation: card-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* Keeps card-in in the list so adding the shake does not replay the entrance. */
 .card[data-shake="true"] {
-  animation: shake 0.45s ease both;
+  animation:
+    card-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both,
+    shake 0.45s ease;
 }
 
 /* Flowing gradient edge */

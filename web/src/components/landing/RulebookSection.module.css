@@ -15,7 +15,6 @@
   background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
   mask-image: radial-gradient(90% 80% at 50% 40%, #000 30%, transparent 85%);
   -webkit-mask-image: radial-gradient(90% 80% at 50% 40%, #000 30%, transparent 85%);
-  animation: paper-pan 40s linear infinite;
 }
 
 .gold {
@@ -29,7 +28,6 @@
   max-height: 560px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 196, 71, 0.2), transparent 65%);
-  filter: blur(70px);
   animation: gold-pulse 9s ease-in-out infinite;
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
-import { useInView } from "@/hooks/useInView";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import styles from "./SplitText.module.css";
 
 interface SplitTextProps {
@@ -9,12 +8,12 @@ interface SplitTextProps {
   tone?: "red" | "blue" | "white";
   /** Delay before the first letter, in ms. */
   base?: number;
-  /** "mount" plays on load, "view" plays when scrolled into view. */
+  /** "mount" plays on load (pure CSS, so it needs no script), "view" plays when scrolled into view. */
   trigger?: "mount" | "view";
   className?: string;
 }
 
-/** Animates a line of text letter by letter. */
+/** Animates a line of text letter by letter. The text is readable even if scripts load late. */
 export function SplitText({
   text,
   tone = "white",
@@ -22,12 +21,36 @@ export function SplitText({
   trigger = "mount",
   className = "",
 }: SplitTextProps) {
-  const { ref, inView } = useInView<HTMLSpanElement>({ threshold: 0.4 });
-  const [mounted, setMounted] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  // mount: plays from the first paint. view: stays visible until the script arms it.
+  const [phase, setPhase] = useState<"idle" | "armed" | "play">(trigger === "mount" ? "play" : "idle");
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    if (trigger !== "view") return;
+    const element = ref.current;
+    if (!element) return;
 
-  const play = trigger === "mount" ? mounted : inView;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const belowFold = element.getBoundingClientRect().top > window.innerHeight * 0.92;
+    if (reduceMotion || !belowFold || !("IntersectionObserver" in window)) {
+      setPhase(reduceMotion ? "idle" : "play");
+      return;
+    }
+
+    setPhase("armed");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPhase("play");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [trigger]);
+
   const chars = Array.from(text);
   const total = chars.filter((c) => c !== " ").length;
 
@@ -39,7 +62,7 @@ export function SplitText({
       ref={ref}
       className={`${styles.root} ${className}`}
       data-tone={tone}
-      data-play={play}
+      data-phase={phase}
       aria-label={text}
       style={{ "--base": `${base}ms`, "--n": total } as CSSProperties}
     >

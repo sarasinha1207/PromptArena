@@ -19,9 +19,19 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [errorCount, setErrorCount] = useState(0);
+  const [shake, setShake] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [notice, setNotice] = useState<"forgot" | "register" | null>(null);
+  // False until the page's scripts are running: the button stays off until then,
+  // so a click can never fall back to a plain browser form submit.
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+    // Warm up the pages a team lands on after logging in.
+    router.prefetch("/arena");
+    router.prefetch("/arena/round-1");
+  }, [router]);
 
   // Already signed in (stored session): go straight to the right area.
   useEffect(() => {
@@ -29,6 +39,13 @@ export function LoginForm() {
       router.replace(role === "admin" ? "/admin/dashboard" : "/arena");
     }
   }, [status, role, router]);
+
+  // Replays the shake animation on every wrong attempt.
+  useEffect(() => {
+    if (!shake) return;
+    const id = setTimeout(() => setShake(false), 480);
+    return () => clearTimeout(id);
+  }, [shake]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,18 +62,18 @@ export function LoginForm() {
             : err.message
           : "Something went wrong. Please try again.",
       );
-      setErrorCount((count) => count + 1);
+      setShake(true);
       setSubmitting(false);
     }
   }
 
   return (
     <form
-      key={`form-${errorCount}`}
       className={styles.card}
-      data-shake={errorCount > 0 && error !== null}
+      data-shake={shake}
+      method="post"
+      action="/auth/login"
       onSubmit={handleSubmit}
-      noValidate={false}
     >
       <div className={styles.header}>
         <span className={styles.logo}>
@@ -124,7 +141,7 @@ export function LoginForm() {
         </p>
       )}
 
-      <button type="submit" className={styles.submit} disabled={submitting}>
+      <button type="submit" className={styles.submit} disabled={submitting || !ready}>
         {submitting && <span className={styles.spinner} aria-hidden="true" />}
         <span>{submitting ? "Logging in" : "Log in"}</span>
       </button>
