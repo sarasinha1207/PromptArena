@@ -1,5 +1,6 @@
-import { PhasePlaceholder } from "@/components/common/PhasePlaceholder";
+import { LeaderboardPage } from "@/components/leaderboard/LeaderboardPage";
 
-export default function LeaderboardPage() {
-  return <PhasePlaceholder title="Leaderboard" route="/leaderboard" phase={4} />;
+/** Dynamic leaderboard: podium, time-series graph and rankings table (handbook §9). */
+export default function Page() {
+  return <LeaderboardPage />;
 }

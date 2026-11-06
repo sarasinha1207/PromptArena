@@ -1,7 +1,9 @@
 import { createStore } from "@/stores/createStore";
 import { walletStore } from "@/stores/walletStore";
-import { resetTournamentState } from "@/stores/tournamentStore";
+import { resetTournamentState, tournamentStore } from "@/stores/tournamentStore";
+import { getLeaderboardMode, isHeldMode } from "@/lib/leaderboard/mode";
 import { resetChallenges } from "@/stores/challengesStore";
+import { resetLeaderboard } from "@/stores/leaderboardStore";
 import { fetchMyProfile, loginRequest } from "@/lib/api/auth";
 import { ApiError, setUnauthorizedHandler } from "@/lib/api/client";
 import { clearToken, readToken, writeToken } from "@/lib/auth/tokenStorage";
@@ -41,6 +43,7 @@ function setAnonymous(): void {
   walletStore.setState({ budget: 0, used: 0, loaded: false });
   resetTournamentState();
   resetChallenges();
+  resetLeaderboard();
 }
 
 /** Restores a session from a stored token on page load. */
@@ -71,7 +74,34 @@ export async function login(userId: string, password: string): Promise<UserRole>
   }
 }
 
+let rankTimer: ReturnType<typeof setTimeout> | null = null;
+
+/**
+ * Keeps the team menu's live rank current after SCORE_BATCH_UPDATE (handbook §12.6).
+ * Only `rank` is taken from the profile, so the token gauge is never overwritten.
+ * Skipped while the standings are held (paused or frozen).
+ */
+export function scheduleRankRefresh(): void {
+  if (authStore.getState().role !== "team") return;
+  if (isHeldMode(getLeaderboardMode(tournamentStore.getState().state))) return;
+  if (rankTimer) clearTimeout(rankTimer);
+  rankTimer = setTimeout(() => {
+    rankTimer = null;
+    fetchMyProfile()
+      .then((fresh) => {
+        const current = authStore.getState().profile;
+        if (!current || authStore.getState().status !== "authenticated") return;
+        authStore.setState({ profile: { ...current, rank: fresh.rank ?? null } });
+      })
+      .catch(() => {
+        /* the next score update tries again */
+      });
+  }, 800);
+}
+
 export function logout(): void {
+  if (rankTimer) clearTimeout(rankTimer);
+  rankTimer = null;
   clearToken();
   setAnonymous();
 }

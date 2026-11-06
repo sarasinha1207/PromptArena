@@ -1,0 +1,140 @@
+.podium {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  padding: 8px 0 0;
+}
+
+.place {
+  --medal: #ffc447;
+  --medal-deep: #b9852a;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  max-width: 300px;
+  animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.place[data-medal="silver"] {
+  --medal: #cfd6e6;
+  --medal-deep: #7d869c;
+  animation-delay: 0.08s;
+}
+
+.place[data-medal="bronze"] {
+  --medal: #e19a62;
+  --medal-deep: #94572b;
+  animation-delay: 0.16s;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px 12px;
+  text-align: center;
+}
+
+.place[data-rank="1"] .identity > :first-child {
+  width: 78px;
+  height: 78px;
+  font-size: 1.5rem;
+  box-shadow: 0 0 0 4px var(--medal), 0 0 0 9px rgba(255, 196, 71, 0.18), 0 0 44px rgba(255, 196, 71, 0.45);
+}
+
+.place[data-rank="2"] .identity > :first-child,
+.place[data-rank="3"] .identity > :first-child {
+  box-shadow: 0 0 0 4px var(--medal), 0 0 0 8px rgba(238, 241, 251, 0.07);
+}
+
+.name {
+  max-width: 100%;
+  margin: 8px 0 0;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: clamp(0.92rem, 1.6vw, 1.12rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+}
+
+.points {
+  color: var(--medal);
+  font-family: var(--font-mono);
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit {
+  color: var(--fog);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.solves {
+  margin: 0;
+  color: var(--fog);
+  font-size: 0.88rem;
+}
+
+.stage {
+  display: grid;
+  place-items: start center;
+  padding-top: 8px;
+  background: linear-gradient(180deg, var(--medal) 0%, var(--medal-deep) 100%);
+  border-radius: 18px 18px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.place[data-rank="1"] .stage { min-height: 84px; }
+.place[data-rank="2"] .stage { min-height: 60px; }
+.place[data-rank="3"] .stage { min-height: 42px; }
+
+.rankNumber {
+  color: rgba(6, 8, 20, 0.78);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@media (max-width: 560px) {
+  .identity {
+    padding-inline: 2px;
+  }
+  .place[data-rank="1"] .stage { min-height: 110px; }
+  .place[data-rank="2"] .stage { min-height: 80px; }
+  .place[data-rank="3"] .stage { min-height: 56px; }
+  .unit {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .place {
+    animation: none;
+  }
+}

@@ -1,0 +1,336 @@
+/*
+ * Series colours: the validated dark categorical palette, in fixed order
+ * (checked against the card surface #0d1330). Teams ranked 9 and 10 reuse the
+ * first two hues and are drawn dashed, so colour is never the only cue.
+ */
+.wrap {
+  --series-0: #3987e5;
+  --series-1: #d95926;
+  --series-2: #199e70;
+  --series-3: #c98500;
+  --series-4: #d55181;
+  --series-5: #2fae2f;
+  --series-6: #9085e9;
+  --series-7: #e66767;
+  --surface: #0d1330;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.chartBox {
+  position: relative;
+  width: 100%;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.grid {
+  stroke: rgba(238, 241, 251, 0.08);
+  stroke-width: 1;
+}
+
+.baseline {
+  stroke: rgba(238, 241, 251, 0.22);
+  stroke-width: 1;
+}
+
+.axisText {
+  fill: #8e98b8;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.series {
+  transition: opacity 0.15s ease;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: stroke-width 0.15s ease;
+}
+
+.jump {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+
+.chart[data-isolate="true"] .series {
+  opacity: 0.14;
+}
+
+.chart[data-isolate="true"] .series[data-active="true"] {
+  opacity: 1;
+}
+
+.chart[data-isolate="true"] .series[data-active="true"] .line {
+  stroke-width: 3.8;
+}
+
+.reveal {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: reveal 1.3s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+}
+
+.badge {
+  cursor: default;
+  transition: opacity 0.15s ease;
+  animation: pop 0.5s ease 1.1s both;
+}
+
+.chart[data-isolate="true"] .badge:not([data-active="true"]) {
+  opacity: 0.3;
+}
+
+.badgeDisc {
+  stroke: var(--surface);
+  stroke-width: 2.5;
+}
+
+.badgeText {
+  fill: #060814;
+  font-family: var(--font-display);
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.crosshair line {
+  stroke: rgba(238, 241, 251, 0.35);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.dot {
+  stroke: var(--surface);
+  stroke-width: 2;
+  transition: opacity 0.15s ease;
+}
+
+.chart[data-isolate="true"] .dot:not([data-active="true"]) {
+  opacity: 0.25;
+}
+
+.marker {
+  cursor: default;
+  transition: opacity 0.15s ease;
+}
+
+.chart[data-isolate="true"] .marker:not([data-active="true"]) {
+  opacity: 0.25;
+}
+
+.markerHit {
+  fill: transparent;
+}
+
+.markerDisc {
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.dagger {
+  fill: var(--surface);
+  stroke: var(--surface);
+}
+
+.dagger path:first-child,
+.dagger circle {
+  stroke: none;
+}
+
+.dagger path:nth-child(2) {
+  stroke: var(--surface);
+}
+
+.endLabel {
+  fill: #eef1fb;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: var(--surface);
+  stroke-width: 4px;
+  pointer-events: none;
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--fog);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+/* ---------- Tooltip ---------- */
+.tooltip {
+  position: absolute;
+  top: 12px;
+  z-index: 3;
+  min-width: 170px;
+  max-width: 260px;
+  padding: 10px 12px;
+  color: #eef1fb;
+  background: #141b3f;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(238, 241, 251, 0.14);
+  pointer-events: none;
+}
+
+.tooltipTime {
+  margin: 0 0 6px;
+  color: #8e98b8;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.tooltipNote {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tooltip ul {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tooltip li {
+  display: grid;
+  grid-template-columns: 16px minmax(44px, auto) 1fr;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  opacity: 0.78;
+}
+
+.tooltip li[data-active="true"] {
+  opacity: 1;
+}
+
+.tooltip b {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.tooltip li span {
+  min-width: 0;
+  overflow: hidden;
+  color: #c4cbe3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.key {
+  display: block;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Legend ---------- */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 220px;
+  padding: 4px 12px 4px 5px;
+  color: var(--bone);
+  font: inherit;
+  font-size: 0.82rem;
+  background: rgba(238, 241, 251, 0.05);
+  border: 0;
+  border-radius: 999px;
+  transition: background 0.15s ease;
+}
+
+.legendItem:hover,
+.legendItem[data-active="true"] {
+  background: rgba(238, 241, 251, 0.14);
+}
+
+.legendItem:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.legendRank {
+  color: var(--fog);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.legendName {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legendNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  color: var(--fog);
+  font-size: 0.82rem;
+}
+
+.legendNote .dagger,
+.legendNote svg {
+  --surface: #0d1330;
+}
+
+@keyframes reveal {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .badge {
+    animation: none;
+  }
+  .series,
+  .line,
+  .dot,
+  .marker,
+  .legendItem {
+    transition: none;
+  }
+}

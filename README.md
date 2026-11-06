@@ -84,7 +84,7 @@ curl -X POST localhost:4000/api/admin/tournament/state -H "Authorization: Bearer
 | 1. Shell, Auth & Top Bar | Built — see below |
 | 2. Round 1 matrix & persona theming | Built — see below |
 | 3. Chat workbench | Built — see below |
-| 4. Leaderboard | Not started |
+| 4. Leaderboard | Built — see below |
 | 5. Round 2 & Round 3 | Not started |
 | 6. Admin command center | Not started |
 | 7. Testing & hardening | Not started |
@@ -144,6 +144,28 @@ Mock backend extras for testing only: prompts containing "flag", "secret" or "ke
 so the guardrail fires; "xss" returns hostile markup; "long" returns a long reply. `MOCK_TOKEN_USED=99990 npm start`
 starts the team with almost no tokens, to see the quota modal.
 
+### Phase 4 scope (handbook §14, Sprint 4)
+`/leaderboard` (§9), reached from the trophy icon in the header:
+- **Winners podium (§9.1):** ranks 1 to 3 on gold, silver and bronze stages with team name, emblem, total points and solve
+  count. Teams are shown as circular icons (podium and table); a team without an
+  avatar gets its initials on a fixed tint.
+- **Progression graph (§9.2): removed from the page at the user's request.** The code is kept, unused, in
+  `web/src/components/leaderboard/ScoreGraph.tsx` and `web/src/lib/leaderboard/standings.ts` (`buildGraph`), and the API still
+  returns the `events` it needs, so it can be put back.
+- **Rankings table (§9.3):** Rank, Team Name, Round 1 Solves, Round 2 Def Score, Round 3 Matches, Penalties, Total Score,
+  Last Solve Timestamp. It never scrolls sideways: on wide screens it is a table, and below 960 px each team becomes a card with labelled values.
+  Rows glide to their new position when a score event reorders them. Ties on points go to the earlier
+  last point-earning event (`web/src/lib/leaderboard/standings.ts`). Round 2 and 3 cells show "—" until the server sends a value.
+- **State behaviour (§5):** `PRE_EVENT` hidden; `ROUND_n_ACTIVE` live; `ROUND_1_PAUSED` graph and ranks held in place;
+  `LEADERBOARD_FROZEN` snapshot held and scores hidden (shown as ••••); `ROUND_n_ENDED` locked; `TOURNAMENT_CONCLUDED`
+  "Final Standings" with the champions podium. Leaving a pause or freeze re-fetches the current standings.
+- `SCORE_BATCH_UPDATE` re-fetches the standings (bursts collapse into one request) and refreshes the live rank in the team menu.
+- Loading, empty ("No scores yet") and error (with Try again) states; no placeholder data.
+
+Mock backend extras for testing only: it invents 12 rival teams with past and ongoing solves (`MOCK_RIVALS=0` turns them
+off), applies one penalty, and serves a snapshot while frozen. Submitting a flag as `team07` moves that team in the table.
+Change state with `POST /api/admin/tournament/state` (see "Mock server") to see paused, frozen, locked and final views.
+
 ## Public landing page (added on request, outside the handbook's route list)
 
 `/` is a public marketing page with its own header and footer, separate from the in-event HUD.
@@ -177,7 +199,12 @@ isolated in one file so it is easy to change.
 | State-change payload | `{ state, current_round, target_end_epoch }` (epoch ms) | `web/src/types/tournament.ts` |
 | WebSocket authentication | Not defined — socket currently connects without credentials | `web/src/lib/realtime/gateway.ts` |
 | Team leader and members | `GET /api/teams/me` returns `leader_name`, `leader_verified` and `roster` (array of `{ name, is_leader }` or plain names). The team menu and dashboard show only what the backend sends; nothing is filled in | `web/src/types/api.ts`, `web/src/lib/team/roster.ts` |
-| Live rank | Read from `rank` in the profile for now. It will update live once the leaderboard (Phase 4) consumes `SCORE_BATCH_UPDATE` | `web/src/stores/authStore.ts` |
+| Live rank | Read from `rank` in `GET /api/teams/me`; re-read after each `SCORE_BATCH_UPDATE` (not while paused or frozen) | `web/src/stores/authStore.ts` |
+| Leaderboard data | `GET /api/leaderboard` returns `{ teams: [{ team_id, team_name, avatar_url?, round1_solves, round1_total, round2_def_score, round3_wins, penalties, total_score, last_solve_at }], events: [{ team_id, created_at, cumulative_score, points_awarded, is_first_blood }], started_at, as_of }`. `events` are `score_events` rows (§11). §12 defines no such endpoint. Timestamps may be epoch ms or ISO strings | `web/src/lib/api/leaderboard.ts`, `web/src/types/leaderboard.ts` |
+| First Blood marker | A score event with `is_first_blood: true` (or `event_type: "FIRST_BLOOD"`) gets a dagger on the graph | `web/src/lib/api/leaderboard.ts` |
+| Frozen leaderboard | While `LEADERBOARD_FROZEN` the server must return the frozen snapshot, never live scores. The page also stops refreshing and hides score numbers | `web/src/stores/leaderboardStore.ts`, `web/src/lib/leaderboard/mode.ts` |
+| Ranking order | Computed on the client from `total_score` and `last_solve_at` (§9.3 tie-break); the server's own rank is not used for the table | `web/src/lib/leaderboard/standings.ts` |
+| `SCORE_BATCH_UPDATE` payload | Used only as a signal to re-fetch; its body is ignored | `web/src/lib/realtime/gateway.ts` |
 | Register now | Links to `NEXT_PUBLIC_REGISTRATION_URL` (the coordinator's form, shared later); until it is set, shows a notice | `web/src/lib/config.ts`, `web/.env.example` |
 | Forgot password | No reset endpoint in the handbook, so it tells teams to ask the event coordinator (optional `NEXT_PUBLIC_SUPPORT_EMAIL`) | `web/src/components/auth/LoginForm.tsx` |
 | List of levels | `GET /api/arena/levels` returns an array (or `{ levels: [...] }`) of `{ id, round_number, level_index, title, persona_name, difficulty, theme_config, narrative, model_specs, known_defenses, current_points, solve_count, attempt_count, first_blood_team, is_solved }`. §12 defines no such endpoint | `web/src/lib/api/arena.ts`, `web/src/types/arena.ts` |

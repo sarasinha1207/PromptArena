@@ -89,6 +89,12 @@ function setState(next) {
     tournament.targetEndEpoch = now() + tournament.pausedRemainingMs;
     tournament.pausedRemainingMs = null;
   }
+  // Freezing takes a snapshot of the board; unfreezing releases it.
+  if (next === "LEADERBOARD_FROZEN" && tournament.state !== "LEADERBOARD_FROZEN") {
+    frozenBoard = serializeBoard();
+  } else if (next !== "LEADERBOARD_FROZEN") {
+    frozenBoard = null;
+  }
   tournament.state = next;
   broadcastState();
 }
@@ -197,6 +203,127 @@ const levelStats = Object.fromEntries(
   LEVELS.map((level) => [level.id, { attempts: 0, solvers: [], firstBlood: null }]),
 );
 const flagCooldowns = new Map(); // `${username}:${levelId}` -> epoch ms
+
+// --- Leaderboard (handbook §9; score_events ledger from §11) ----------------
+// Dev-only: rival teams are generated here so the leaderboard has something to
+// show. They solve levels over time and update level counters like real teams.
+// Set MOCK_RIVALS=0 to run with only the real test accounts.
+const RIVAL_NAMES = [
+  "Team Cipher", "KernelPanic", "NullPointer", "0xRoot", "StackSmashers", "ByteBandits",
+  "PromptPirates", "ZeroDay", "RootAccess", "DeadLock", "Sandbox Escape", "Bit Flip",
+];
+const RIVALS_ENABLED = process.env.MOCK_RIVALS !== "0";
+const board = { startedAt: now() - 40 * 60_000, events: [], teams: new Map() };
+let frozenBoard = null; // snapshot served while the leaderboard is frozen
+
+function addBoardTeam(id, name) {
+  const team = { team_id: id, team_name: name, solves: new Set(), penalties: 0, total: 0, lastSolveAt: null };
+  board.teams.set(id, team);
+  return team;
+}
+
+for (const user of Object.values(USERS)) {
+  if (user.profile.role === "team") addBoardTeam(user.profile.team_id, user.profile.team_name);
+}
+
+/** Records a solve: updates the level counters and appends a score event. */
+function recordSolve(team, solverKey, level, at) {
+  const stats = levelStats[level.id];
+  const points = pointsFor(level);
+  const firstBlood = stats.solvers.length === 0;
+  stats.solvers.push(solverKey);
+  if (firstBlood) stats.firstBlood = team.team_name;
+
+  const awarded = points + (firstBlood ? 50 : 0);
+  team.solves.add(level.id);
+  team.total += awarded;
+  team.lastSolveAt = at;
+  board.events.push({
+    team_id: team.team_id,
+    created_at: at,
+    points_awarded: awarded,
+    cumulative_score: team.total,
+    event_type: firstBlood ? "FIRST_BLOOD" : "FLAG_SOLVE",
+  });
+  return { points, firstBlood, awarded };
+}
+
+if (RIVALS_ENABLED) {
+  const rivals = RIVAL_NAMES.map((name, index) => ({ team: addBoardTeam(`rival-${index + 1}`, name), key: `rival:${name}` }));
+  // Past solves, replayed in time order so decay and First Blood come out right.
+  const plan = [];
+  for (const rival of rivals) {
+    const count = Math.floor(Math.random() * 5); // 0-4 levels
+    const levelIds = LEVELS.map((l) => l.id).sort(() => Math.random() - 0.5).slice(0, count);
+    for (const levelId of levelIds) plan.push({ rival, levelId, at: board.startedAt + (3 + Math.random() * 36) * 60_000 });
+  }
+  plan.sort((a, b) => a.at - b.at);
+  for (const step of plan) recordSolve(step.rival.team, step.rival.key, LEVELS.find((l) => l.id === step.levelId), step.at);
+
+  // One admin penalty (handbook §10), so the Penalties column has a real value.
+  const penalised = rivals[2].team;
+  penalised.penalties = -50;
+  penalised.total -= 50;
+  board.events.push({
+    team_id: penalised.team_id,
+    created_at: board.startedAt + 25 * 60_000,
+    points_awarded: -50,
+    cumulative_score: penalised.total,
+    event_type: "PENALTY",
+  });
+  board.events.sort((a, b) => a.created_at - b.created_at);
+}
+
+function serializeBoard() {
+  return {
+    started_at: board.startedAt,
+    as_of: now(),
+    teams: [...board.teams.values()].map((t) => ({
+      team_id: t.team_id,
+      team_name: t.team_name,
+      round1_solves: t.solves.size,
+      round1_total: LEVELS.length,
+      round2_def_score: null,
+      round3_wins: null,
+      penalties: t.penalties,
+      total_score: t.total,
+      last_solve_at: t.lastSolveAt,
+    })),
+    events: board.events.map((e) => ({ ...e })),
+  };
+}
+
+/** Live rank by total score; ties go to the earlier last point-earning event (handbook §9.3). */
+function liveRankOf(teamId) {
+  const sorted = [...board.teams.values()].sort(
+    (a, b) => b.total - a.total || (a.lastSolveAt ?? Infinity) - (b.lastSolveAt ?? Infinity),
+  );
+  return sorted.findIndex((t) => t.team_id === teamId) + 1;
+}
+
+function broadcastScores() {
+  const message = JSON.stringify({ event: "SCORE_BATCH_UPDATE", data: {} });
+  for (const client of wss.clients) {
+    if (client.readyState === 1) client.send(message);
+  }
+}
+
+// A rival captures a flag every so often while play is open (also while frozen:
+// the real board keeps moving, only the public snapshot is held).
+if (RIVALS_ENABLED) {
+  setInterval(() => {
+    const open = tournament.state === "ROUND_1_ACTIVE" || tournament.state === "LEADERBOARD_FROZEN";
+    if (!open || Math.random() > 0.8) return;
+    const rivals = [...board.teams.values()].filter((t) => String(t.team_id).startsWith("rival-"));
+    const candidates = rivals.filter((t) => t.solves.size < LEVELS.length);
+    if (candidates.length === 0) return;
+    const team = candidates[Math.floor(Math.random() * candidates.length)];
+    const open_levels = LEVELS.filter((l) => !team.solves.has(l.id));
+    const level = open_levels[Math.floor(Math.random() * open_levels.length)];
+    recordSolve(team, `rival:${team.team_name}`, level, now());
+    if (tournament.state !== "LEADERBOARD_FROZEN") broadcastScores();
+  }, 9000);
+}
 
 // --- Chat sessions and the fake "model" (handbook §6.2, §6.3) -----------------
 // The mock model has no AI: it replies with each persona's sample refusal. A
@@ -350,7 +477,9 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "GET" && pathname === "/api/teams/me") {
     const session = readSession(req);
     if (!session) return send(res, 401, { success: false, reason: "UNAUTHORIZED" });
-    return send(res, 200, USERS[session.sub].profile);
+    const profile = USERS[session.sub].profile;
+    if (profile.role !== "team") return send(res, 200, profile);
+    return send(res, 200, { ...profile, rank: liveRankOf(profile.team_id) });
   }
 
   if (req.method === "POST" && pathname === "/api/admin/tournament/state") {
@@ -473,6 +602,14 @@ const server = http.createServer(async (req, res) => {
     return send(res, 200, LEVELS.map((level) => presentLevel(level, session.sub)));
   }
 
+  // Standings and the score ledger (assumed route; handbook §9). Hidden before the event.
+  if (req.method === "GET" && pathname === "/api/leaderboard") {
+    const session = readSession(req);
+    if (!session) return send(res, 401, { success: false, reason: "UNAUTHORIZED" });
+    if (tournament.state === "PRE_EVENT") return send(res, 403, { success: false, reason: "LEADERBOARD_HIDDEN", message: "The leaderboard opens when the event starts." });
+    return send(res, 200, frozenBoard ?? serializeBoard());
+  }
+
   const submitMatch = /^\/api\/arena\/levels\/(\d+)\/submit$/.exec(pathname);
   if (req.method === "POST" && submitMatch) {
     const session = readSession(req);
@@ -507,19 +644,14 @@ const server = http.createServer(async (req, res) => {
       return send(res, 400, { success: false, reason: "INVALID_FLAG", cooldown_until: new Date(until).toISOString() });
     }
 
-    const points = pointsFor(level);
-    const firstBlood = stats.solvers.length === 0;
-    stats.solvers.push(username);
-    if (firstBlood) stats.firstBlood = USERS[username].profile.team_name;
-
-    for (const client of wss.clients) {
-      if (client.readyState === 1) client.send(JSON.stringify({ event: "SCORE_BATCH_UPDATE", data: {} }));
-    }
+    const team = board.teams.get(USERS[username].profile.team_id);
+    const result = recordSolve(team, username, level, now());
+    if (tournament.state !== "LEADERBOARD_FROZEN") broadcastScores();
     return send(res, 200, {
       success: true,
-      points_awarded: points + (firstBlood ? 50 : 0),
-      first_blood: firstBlood,
-      updated_team_score: points + (firstBlood ? 50 : 0),
+      points_awarded: result.awarded,
+      first_blood: result.firstBlood,
+      updated_team_score: team.total,
     });
   }
 

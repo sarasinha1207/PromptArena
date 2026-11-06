@@ -5,6 +5,8 @@ import {
   tournamentStore,
 } from "@/stores/tournamentStore";
 import { scheduleChallengeRefresh } from "@/stores/challengesStore";
+import { scheduleLeaderboardRefresh } from "@/stores/leaderboardStore";
+import { scheduleRankRefresh } from "@/stores/authStore";
 import { isTournamentState } from "@/types/tournament";
 
 const MAX_RECONNECT_DELAY_MS = 10_000;
@@ -100,6 +102,10 @@ export class TournamentGateway {
     // New level released, or scores moved: re-fetch the matrix (handbook §12.6).
     if (event === "CHALLENGE_DEPLOYED" || event === "SCORE_BATCH_UPDATE") {
       scheduleChallengeRefresh();
+      if (event === "SCORE_BATCH_UPDATE") {
+        scheduleLeaderboardRefresh();
+        scheduleRankRefresh();
+      }
       return;
     }
 
