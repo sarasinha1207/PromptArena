@@ -95,7 +95,9 @@ curl -X POST localhost:4000/api/admin/tournament/state -H "Authorization: Bearer
   (warnings below 20% and 5%), team capsule (handle, verified leader, rank, logout).
 - WebSocket hook for tournament state, including the full-screen pause banner and resume.
 - Server-time clock sync (30 s ping/pong, `drift_offset = server_epoch + rtt/2 − t1`).
-- `/rules` page (content from §2).
+- Rules: the header's Rules icon opens a short dropdown of the rules in bullet points (no page change; closes on Escape or an
+  outside click). The same points, from `web/src/content/rules.ts` (handbook §2, §6.2), are on the public `/rules` page that the
+  landing and login pages link to.
 
 ### Phase 2 scope (handbook §14, Sprint 2)
 - `/arena` is the dynamic round router: it sends the team to the active round from the tournament state.

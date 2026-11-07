@@ -21,16 +21,24 @@
 }
 
 .page h2 {
-  margin-top: 0;
+  margin: 0 0 12px;
+  color: var(--cyan);
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
-.formula {
-  padding: 10px 12px;
-  background: var(--color-bg);
-  border-radius: var(--radius);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+.page ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.5;
+}
+
+.page li::marker {
+  color: var(--cyan);
 }
