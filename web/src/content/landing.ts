@@ -5,11 +5,28 @@
  */
 
 export const NAV_LINKS = [
+  { id: "event", label: "Event" },
   { id: "about", label: "About" },
   { id: "rounds", label: "Rounds" },
   { id: "levels", label: "Levels" },
   { id: "rulebook", label: "Rulebook" },
 ] as const;
+
+export const TAGLINE = "Hack & Defend";
+
+/** Event facts, as given by the organisers. */
+export const EVENT_DETAILS = {
+  heading: "Event details",
+  items: [
+    { label: "Event", value: "PromptArena", note: TAGLINE, wide: true },
+    { label: "Date", value: "13 December" },
+    { label: "Duration", value: "8 hours" },
+    { label: "Team size", value: "Up to 3 members" },
+    { label: "Location", value: "CLH, IIT Patna Campus", wide: true },
+    { label: "Eligible semesters", value: "1, 2, 4 and 5" },
+    { label: "Eligible courses", value: "BSc CSDA, BS and BBA", full: true },
+  ],
+} as const;
 
 export const ABOUT = {
   heading: "In this CTF, the exploit is a sentence.",

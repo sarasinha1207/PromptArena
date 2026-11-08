@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { NAV_LINKS } from "@/content/landing";
+import { NAV_LINKS, TAGLINE } from "@/content/landing";
 import { LoginButton } from "./LoginButton";
 import { LogoMark } from "./LogoMark";
 import styles from "./LandingHeader.module.css";
@@ -49,6 +49,7 @@ export function LandingHeader() {
         <Link href="/" className={styles.brand} aria-label="PromptArena home">
           <LogoMark size={30} />
           <span className={styles.brandName}>PromptArena</span>
+          <span className={styles.tagline}>{TAGLINE}</span>
         </Link>
 
         <nav className={styles.nav} aria-label="Sections" data-open={menuOpen}>
