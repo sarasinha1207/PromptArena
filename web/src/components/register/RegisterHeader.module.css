@@ -1,0 +1,47 @@
+.head {
+  text-align: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: var(--glass-2);
+  backdrop-filter: blur(8px);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 0 rgba(255, 45, 85, 0.7);
+  animation: ping 1.8s infinite;
+}
+
+@keyframes ping {
+  70% { box-shadow: 0 0 0 10px rgba(255, 45, 85, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 45, 85, 0); }
+}
+
+.title {
+  margin: 22px 0 10px;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(40px, 10.5vw, 90px);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  background: linear-gradient(100deg, #fff 0%, var(--cyan) 30%, var(--blue) 50%, var(--red) 78%, #fff 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 30px rgba(47, 107, 255, 0.35));
+}

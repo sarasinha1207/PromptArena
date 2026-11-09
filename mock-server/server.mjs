@@ -4,6 +4,7 @@
 import http from "node:http";
 import { createHmac } from "node:crypto";
 import { WebSocketServer } from "ws";
+import { handleRegistrationRoutes } from "./registrations.mjs";
 
 const PORT = Number(process.env.PORT ?? 4000);
 // Simulates a server whose clock differs from the browser's, to test drift sync.
@@ -460,6 +461,8 @@ const server = http.createServer(async (req, res) => {
   const { pathname } = new URL(req.url, `http://${req.headers.host}`);
 
   if (req.method === "OPTIONS") return send(res, 204);
+
+  if (await handleRegistrationRoutes(req, res, pathname)) return;
 
   if (req.method === "POST" && pathname === "/api/auth/login") {
     const { user_id, password } = await readBody(req);

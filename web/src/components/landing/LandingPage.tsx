@@ -1,7 +1,6 @@
 import { AboutSection } from "./AboutSection";
 import { ClosingCta } from "./ClosingCta";
 import { CursorGlow } from "./CursorGlow";
-import { EventDetails } from "./EventDetails";
 import { Hero } from "./Hero";
 import { LandingFooter } from "./LandingFooter";
 import { LandingHeader } from "./LandingHeader";
@@ -24,7 +23,7 @@ const KEYWORDS = [
   "Live leaderboard",
 ];
 
-/** Public landing page: header, hero, event details, about, rounds, levels, rulebook, login call to action, footer. */
+/** Public landing page: header, hero (with the event details card), about, rounds, levels, rulebook, login call to action, footer. */
 export function LandingPage() {
   return (
     <div className={styles.page}>
@@ -32,7 +31,6 @@ export function LandingPage() {
       <LandingHeader />
       <Hero />
       <Marquee items={KEYWORDS} />
-      <EventDetails />
       <AboutSection />
       <RoundsSection />
       <Marquee items={[...KEYWORDS].reverse()} reverse tone="ghost" />

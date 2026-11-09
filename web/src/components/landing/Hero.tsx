@@ -2,7 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { GlyphField } from "./GlyphField";
+import { EVENT_DETAILS } from "@/content/landing";
 import { LoginButton } from "./LoginButton";
+import { RegisterButton } from "./RegisterButton";
 import { SplitText } from "./SplitText";
 import { Typewriter } from "./Typewriter";
 import shared from "./shared.module.css";
@@ -20,6 +22,19 @@ const PHRASES = [
  */
 export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
+
+  // The red and blue background runs behind the details card, so the stage needs the card's height.
+  useEffect(() => {
+    const stage = stageRef.current;
+    const card = detailsRef.current;
+    if (!stage || !card) return;
+    const sync = () => stage.style.setProperty("--details-h", `${card.offsetHeight}px`);
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -130,15 +145,25 @@ export function Hero() {
             <span>Your team will</span> <Typewriter phrases={PHRASES} />
           </p>
           <div className={styles.actions}>
-            <LoginButton />
+            <RegisterButton />
+            <LoginButton variant="ghost" />
             <a href="#rulebook" className={`${shared.btn} ${shared.btnGhost}`}>
               Read the rulebook
             </a>
           </div>
-          <a href="#about" className={styles.cue} aria-label="Scroll to About">
-            <span className={styles.cueDot} />
-          </a>
         </div>
+
+      {/* Event details: one horizontal card along the bottom of the hero */}
+      <div className={styles.detailsWrap} ref={detailsRef}>
+        <dl className={styles.details} aria-label="Event details">
+          {EVENT_DETAILS.items.map((item) => (
+            <div key={item.label} className={styles.detail}>
+              <dt className={styles.detailLabel}>{item.label}</dt>
+              <dd className={styles.detailValue}>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
       </div>
     </section>
   );

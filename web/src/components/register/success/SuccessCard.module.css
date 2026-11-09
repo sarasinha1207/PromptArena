@@ -1,0 +1,99 @@
+.success {
+  padding: 12px 0;
+  text-align: center;
+  animation: pop 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.check {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 8px;
+}
+
+.check circle {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 4;
+  stroke-dasharray: 289;
+  stroke-dashoffset: 289;
+  animation: draw 0.8s 0.1s forwards;
+}
+
+.check path {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: draw 0.5s 0.8s forwards;
+}
+
+.heading {
+  margin: 10px 0 6px;
+  font-family: var(--display);
+  font-size: clamp(22px, 5vw, 32px);
+}
+
+.heading span {
+  color: var(--cyan);
+}
+
+.message {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.id {
+  display: inline-block;
+  margin-bottom: 24px;
+  padding: 6px 16px;
+  border: 1px dashed var(--line);
+  border-radius: 99px;
+  color: var(--cyan);
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+}
+
+.actions {
+  display: grid;
+  gap: 12px;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* One falling piece of confetti; the pieces are added to <body> by launchConfetti. */
+.confetti {
+  position: fixed;
+  top: -12px;
+  z-index: 50;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(105vh) rotate(720deg);
+    opacity: 0.9;
+  }
+}

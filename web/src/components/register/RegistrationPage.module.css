@@ -1,0 +1,97 @@
+/*
+ * Page shell for /register. The tokens below are inherited by every component
+ * inside, so the component stylesheets only use var(--name).
+ */
+.page {
+  --bg: #050a1c;
+  --blue: #2f6bff;
+  --cyan: #3cc8ff;
+  --red: #ff2d55;
+  --text: #eaf0ff;
+  --muted: #90a0c8;
+  --glass: rgba(14, 22, 54, 0.58);
+  --glass-2: rgba(255, 255, 255, 0.045);
+  --line: rgba(140, 165, 255, 0.18);
+  --field-bg: rgba(5, 10, 30, 0.55);
+  --field-bg-focus: rgba(8, 16, 44, 0.8);
+
+  --display: var(--font-orbitron-loaded), "Segoe UI", sans-serif;
+  --body: var(--font-sora-loaded), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --chevron-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2390a0c8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  --chevron-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23eaf0ff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 15l6-6 6 6'/%3E%3C/svg%3E");
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  line-height: 1.55;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 56px 16px 80px;
+}
+
+.noscript {
+  max-width: 820px;
+  margin: 24px auto 0;
+  padding: 14px 18px;
+  border: 1px solid var(--red);
+  border-radius: 12px;
+  background: rgba(255, 45, 85, 0.1);
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.back:hover {
+  color: var(--text);
+}
+
+.foot {
+  margin-top: 36px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.foot b {
+  color: var(--red);
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page *,
+  .page *::before,
+  .page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .wrap {
+    padding-top: 36px;
+  }
+}

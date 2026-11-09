@@ -1,0 +1,38 @@
+/* Dark blue backdrop with blue and red light patches and a faint grid. */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.b1 { width: 52vmax; height: 52vmax; background: radial-gradient(circle, var(--blue), transparent 68%); top: -18vmax; left: -14vmax; animation: drift1 22s ease-in-out infinite alternate; }
+.b2 { width: 44vmax; height: 44vmax; background: radial-gradient(circle, var(--red), transparent 68%); top: 18vmax; right: -16vmax; opacity: 0.42; animation: drift2 26s ease-in-out infinite alternate; }
+.b3 { width: 40vmax; height: 40vmax; background: radial-gradient(circle, #1b44d6, transparent 68%); bottom: -16vmax; left: 8vw; animation: drift3 30s ease-in-out infinite alternate; }
+.b4 { width: 30vmax; height: 30vmax; background: radial-gradient(circle, #d81b4a, transparent 68%); bottom: -8vmax; right: 12vw; opacity: 0.32; animation: drift1 24s ease-in-out infinite alternate-reverse; }
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(130, 160, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(130, 160, 255, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
+  animation: grid-move 12s linear infinite;
+}
+
+@keyframes drift1 { to { transform: translate(14vw, 12vh) scale(1.15); } }
+@keyframes drift2 { to { transform: translate(-16vw, 10vh) scale(0.9); } }
+@keyframes drift3 { to { transform: translate(10vw, -14vh) scale(1.2); } }
+@keyframes grid-move { to { background-position: 0 56px, 56px 0; } }

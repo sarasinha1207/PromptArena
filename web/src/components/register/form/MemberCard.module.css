@@ -1,0 +1,74 @@
+.member {
+  min-width: 0;
+  margin: 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  animation: pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Members beyond the chosen team size are disabled, which also hides them. */
+.member:disabled {
+  display: none;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.number {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid rgba(234, 240, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tag {
+  margin-left: auto;
+  padding: 4px 10px;
+  border: 1px solid rgba(234, 240, 255, 0.22);
+  border-radius: 99px;
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .member {
+    padding: 18px 14px;
+  }
+}

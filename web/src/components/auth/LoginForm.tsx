@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useStore } from "@/stores/createStore";
 import { authStore, login } from "@/stores/authStore";
 import { ApiError } from "@/lib/api/client";
-import { REGISTRATION_URL, SUPPORT_EMAIL } from "@/lib/config";
+import { SUPPORT_EMAIL } from "@/lib/config";
 import { LogoMark } from "@/components/landing/LogoMark";
 import styles from "./LoginForm.module.css";
 
@@ -21,7 +22,7 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [notice, setNotice] = useState<"forgot" | "register" | null>(null);
+  const [notice, setNotice] = useState<"forgot" | null>(null);
   // False until the page's scripts are running: the button stays off until then,
   // so a click can never fall back to a plain browser form submit.
   const [ready, setReady] = useState(false);
@@ -163,32 +164,9 @@ export function LoginForm() {
         <span>New team?</span>
       </div>
 
-      {REGISTRATION_URL ? (
-        <a
-          className={styles.register}
-          href={REGISTRATION_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Register now
-        </a>
-      ) : (
-        <button
-          type="button"
-          className={styles.register}
-          aria-expanded={notice === "register"}
-          onClick={() => setNotice((current) => (current === "register" ? null : "register"))}
-        >
-          Register now
-        </button>
-      )}
-
-      {notice === "register" && !REGISTRATION_URL && (
-        <p className={styles.notice} role="status">
-          Teams register through a form the event coordinator will share. Once you register,
-          your user ID and password arrive by email.
-        </p>
-      )}
+      <Link className={styles.register} href="/register">
+        Register now
+      </Link>
     </form>
   );
 }

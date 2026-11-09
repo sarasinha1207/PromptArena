@@ -1,0 +1,54 @@
+/* Neutral buttons: no gradients, no brand colours. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 22px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.primary {
+  color: #0a1230;
+  background: #e8edfb;
+  border: 1px solid transparent;
+}
+
+.primary:hover:not(:disabled) {
+  background: #ffffff;
+}
+
+.secondary {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(234, 240, 255, 0.22);
+}
+
+.secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(234, 240, 255, 0.45);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.99);
+}

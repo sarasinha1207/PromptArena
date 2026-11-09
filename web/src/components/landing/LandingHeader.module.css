@@ -32,14 +32,16 @@
 }
 
 .brand {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
   align-items: center;
-  gap: 10px;
   color: var(--bone);
   text-decoration: none;
 }
 
 .brandName {
+  line-height: 1.1;
   font-family: var(--font-display);
   font-size: 1.02rem;
   font-weight: 800;
@@ -48,17 +50,20 @@
 }
 
 .tagline {
-  padding-left: 12px;
-  border-left: 1px solid var(--line);
   background: linear-gradient(100deg, var(--breach), var(--shield));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 700;
+  line-height: 1.15;
   letter-spacing: 0.02em;
   white-space: nowrap;
+}
+
+.brand :global(svg) {
+  grid-row: 1 / span 2;
 }
 
 .brand :global(svg) {
@@ -201,31 +206,6 @@
 
   .bar {
     overflow: visible;
-  }
-}
-
-@media (max-width: 1060px) {
-  .brand {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    column-gap: 10px;
-    align-items: center;
-  }
-
-  .brand :global(svg) {
-    grid-row: 1 / span 2;
-  }
-
-  .brandName {
-    font-size: 0.95rem;
-    line-height: 1.15;
-  }
-
-  .tagline {
-    padding-left: 0;
-    border-left: 0;
-    font-size: 0.78rem;
-    line-height: 1.15;
   }
 }
 

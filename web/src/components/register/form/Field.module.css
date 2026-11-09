@@ -1,0 +1,102 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 16px;
+}
+
+.field {
+  min-width: 0;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  color: #c4d0f0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.required {
+  margin-left: 3px;
+  color: #ff7d95;
+}
+
+.control {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background-color: var(--field-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.control::placeholder {
+  color: rgba(144, 160, 200, 0.5);
+}
+
+.control:hover {
+  border-color: rgba(140, 170, 255, 0.4);
+}
+
+/* background-color only: the `background` shorthand would reset the dropdown arrow. */
+.control:focus {
+  outline: none;
+  border-color: rgba(140, 175, 255, 0.85);
+  background-color: var(--field-bg-focus);
+  box-shadow: 0 0 0 3px rgba(90, 130, 255, 0.22);
+}
+
+.control:user-invalid,
+.control[aria-invalid="true"] {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(255, 45, 85, 0.16);
+}
+
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 44px;
+  background-image: var(--chevron-down);
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px 18px;
+}
+
+.select:focus {
+  background-image: var(--chevron-up);
+}
+
+.select:invalid {
+  color: rgba(144, 160, 200, 0.7);
+}
+
+.select option {
+  background: #0a1332;
+  color: #eaf0ff;
+}
+
+.select option[disabled] {
+  color: #6b7aa3;
+}
+
+.error {
+  margin: 7px 0 0;
+  color: #ff8aa0;
+  font-size: 12.5px;
+}
+
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

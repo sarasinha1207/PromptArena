@@ -187,6 +187,30 @@ Every **Log in** button goes to `/auth/login`; signed-in users see **Enter the a
 - The login page (`/auth/login`) shares the same look: arena showcase on the left, animated form on the right.
 - Colours are neutral-to-arena placeholders for the UI/UX team; they live in `web/src/styles/tokens.css`.
 
+## Team registration (added on request, outside the handbook's route list)
+
+- Page: `/register`, linked from the landing hero ("Register your team") and the login page ("Register now"). It reproduces the standalone registration site: event tiles, team form for 1 to 3 members with a progress bar, a confirmation with a CSV copy for the team.
+- Rules (same on the form and on the server): team of 1 to 3 (leader included); courses BSc CSDA, BS, BBA; semesters 1, 2, 4, 5; 10-digit phone; unique team name, email and phone across all teams and within a team.
+- Code layout (`web/src/components/register/`): one folder per role, each component with its own stylesheet.
+
+  ```
+  register/
+  ├── RegistrationPage.tsx        page shell, success switch, design tokens (CSS variables)
+  ├── RegisterBackground.tsx      fixed blue and red backdrop
+  ├── RegisterHeader.tsx          status pill, title, Tagline.tsx (typed "Hack & Defend")
+  ├── EventDetails.tsx            event tiles
+  ├── form/                       RegistrationForm, MemberCard, Field (TextField, SelectField),
+  │                               ProgressBar, useRegistrationForm (all form logic and the submit)
+  ├── success/                    SuccessCard (confirmation, CSV copy, confetti)
+  └── ui/                         Card, Button (neutral buttons only), rise (entrance animation)
+  ```
+
+  Supporting code: `web/src/content/registration.ts` (courses, semesters, team size), `web/src/lib/api/registration.ts` (the request), `web/src/lib/registration/` (CSV copy, confetti).
+- Buttons inside the form are neutral (light and outline), with no gradients or brand colours.
+- Fonts: Orbitron and Sora, bundled in `web/src/fonts` (open licence, from Google Fonts).
+- Backend: `mock-server/registrations.mjs` saves teams to `mock-server/data/registrations.json` (git-ignored, personal data). Optional settings: `MAX_TEAMS`, `ALLOWED_EMAIL_DOMAIN` (e.g. `iitp.ac.in`), `REGISTRATION_FILE`, and `REGISTRATION_ADMIN_TOKEN` which switches on `GET /api/admin/registrations` and `/api/admin/registrations.csv` (send `Authorization: Bearer <token>`).
+- On Render's free plan the disk is temporary: the file is wiped on every redeploy or restart. Download the CSV before redeploying, or move the store to a database.
+
 ## Assumptions to confirm with the backend team
 
 The handbook does not define these, so Phase 1 uses the guesses below. Each is
@@ -207,7 +231,7 @@ isolated in one file so it is easy to change.
 | Frozen leaderboard | While `LEADERBOARD_FROZEN` the server must return the frozen snapshot, never live scores. The page also stops refreshing and hides score numbers | `web/src/stores/leaderboardStore.ts`, `web/src/lib/leaderboard/mode.ts` |
 | Ranking order | Computed on the client from `total_score` and `last_solve_at` (§9.3 tie-break); the server's own rank is not used for the table | `web/src/lib/leaderboard/standings.ts` |
 | `SCORE_BATCH_UPDATE` payload | Used only as a signal to re-fetch; its body is ignored | `web/src/lib/realtime/gateway.ts` |
-| Register now | Links to `NEXT_PUBLIC_REGISTRATION_URL` (the coordinator's form, shared later); until it is set, shows a notice | `web/src/lib/config.ts`, `web/.env.example` |
+| Register now | Opens the `/register` page (built into the website, same look as the standalone registration site). The form posts to `POST /api/registrations`. §12 defines no such endpoint, so the real backend must provide it, or keep using the mock server for registrations | `web/src/components/register/`, `web/src/lib/api/registration.ts`, `mock-server/registrations.mjs` |
 | Forgot password | No reset endpoint in the handbook, so it tells teams to ask the event coordinator (optional `NEXT_PUBLIC_SUPPORT_EMAIL`) | `web/src/components/auth/LoginForm.tsx` |
 | List of levels | `GET /api/arena/levels` returns an array (or `{ levels: [...] }`) of `{ id, round_number, level_index, title, persona_name, difficulty, theme_config, narrative, model_specs, known_defenses, current_points, solve_count, attempt_count, first_blood_team, is_solved }`. §12 defines no such endpoint | `web/src/lib/api/arena.ts`, `web/src/types/arena.ts` |
 | Persona `theme_id` values | `claire_corporate_hr`, `ignatius_iron_archive`, `vector88_arcade`, `vex_underworld_broker`, `aura7_frigate` (only `vex_underworld_broker` appears in §3.2) | `web/src/lib/theme/personaThemes.ts` |

@@ -35,6 +35,21 @@ const mono = localFont({
   display: "swap",
 });
 
+// Orbitron and Sora: the team registration page.
+const orbitron = localFont({
+  src: "../fonts/Orbitron-400-900.woff2",
+  weight: "400 900",
+  variable: "--font-orbitron-loaded",
+  display: "swap",
+});
+
+const sora = localFont({
+  src: "../fonts/Sora-100-800.woff2",
+  weight: "100 800",
+  variable: "--font-sora-loaded",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "PromptArena",
   description:
@@ -49,7 +64,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      className={`${display.variable} ${body.variable} ${mono.variable} ${orbitron.variable} ${sora.variable}`}
     >
       <body suppressHydrationWarning>
         <AppProviders>{children}</AppProviders>
