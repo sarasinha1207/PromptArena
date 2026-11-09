@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ROUNDS, type RoundId } from "@/content/landing";
 import { BluePreview, RedPreview, VersusPreview } from "./RoundPreviews";
-import { Reveal } from "./Reveal";
+import { SectionHeader } from "./SectionHeader";
 import { TiltCard } from "./TiltCard";
 import shared from "./shared.module.css";
 import styles from "./RoundsSection.module.css";
@@ -20,22 +20,26 @@ export function RoundsSection() {
   const Preview = PREVIEWS[round.id];
 
   return (
-    <section id="rounds" className={`${shared.section} ${styles.rounds}`}>
-      {/* Background style: slow aurora mesh */}
-      <i className={`${styles.orb} ${styles.orbRed}`} aria-hidden="true" />
-      <i className={`${styles.orb} ${styles.orbBlue}`} aria-hidden="true" />
-      <i className={`${styles.orb} ${styles.orbViolet}`} aria-hidden="true" />
+    <section id="rounds" className={shared.section} data-lights="b">
+      {/* Background: the wizard on the hill, faint, under a slow red and blue light mesh */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className={styles.hill}
+        src="/assets/landing/gandalf-shire.webp"
+        alt=""
+        width={1440}
+        height={1240}
+        loading="lazy"
+        decoding="async"
+      />
 
       <div className={shared.container}>
-        <Reveal variant="blur">
-          <h2 className={shared.heading}>Three rounds. Two sides. One winner.</h2>
-          <p className={shared.lead}>
-            Pick a round to see what you do and a preview of the screen you will play on.
-          </p>
-        </Reveal>
+        <SectionHeader
+          title="Three rounds. Two sides. One winner."
+          lead="Pick a round to see what you do and a preview of the screen you will play on."
+        />
 
-        <Reveal variant="up" delay={120}>
-          <div className={styles.tabs} role="tablist" aria-label="Rounds">
+        <div className={styles.tabs} role="tablist" aria-label="Rounds">
             {ROUNDS.map((r) => (
               <button
                 key={r.id}
@@ -53,8 +57,7 @@ export function RoundsSection() {
                 <span className={styles.tabName}>{r.name}</span>
               </button>
             ))}
-          </div>
-        </Reveal>
+        </div>
 
         <div
           key={round.id}

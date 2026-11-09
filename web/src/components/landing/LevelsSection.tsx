@@ -2,7 +2,7 @@
 
 import { useState, type CSSProperties } from "react";
 import { LEVELS } from "@/content/landing";
-import { Reveal } from "./Reveal";
+import { SectionHeader } from "./SectionHeader";
 import shared from "./shared.module.css";
 import styles from "./LevelsSection.module.css";
 
@@ -10,22 +10,14 @@ export function LevelsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="levels" className={`${shared.section} ${styles.levels}`}>
-      {/* Background style: glowing perspective floor */}
-      <div className={styles.floor} aria-hidden="true" />
-      <i className={styles.halo} aria-hidden="true" />
-
+    <section id="levels" className={shared.section} data-lights="a">
       <div className={shared.container}>
-        <Reveal variant="blur">
-          <h2 className={shared.heading}>Five levels. Five minds to break.</h2>
-          <p className={shared.lead}>
-            Round 1 puts you against five AI characters, each guarding a secret. Every level
-            is harder than the last, and every character fights back in its own voice.
-          </p>
-        </Reveal>
+        <SectionHeader
+          title="Five levels. Five minds to break."
+          lead="Round 1 puts you against five AI characters, each guarding a secret. Every level is harder than the last, and every character fights back in its own voice."
+        />
 
-        <Reveal variant="zoom" delay={150}>
-          <div className={styles.rail}>
+        <div className={styles.rail}>
             {LEVELS.map((level, index) => {
               const active = index === activeIndex;
               return (
@@ -86,8 +78,7 @@ export function LevelsSection() {
                 </article>
               );
             })}
-          </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

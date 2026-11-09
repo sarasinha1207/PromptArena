@@ -25,14 +25,12 @@
   padding: 1.5px;
   border-radius: inherit;
   pointer-events: none;
-  background: linear-gradient(120deg, var(--breach), var(--violet), var(--shield), var(--cyan), var(--breach));
-  background-size: 300% 300%;
+  background: linear-gradient(135deg, rgba(243, 226, 178, 0.75), rgba(215, 180, 106, 0.16) 42%, rgba(215, 180, 106, 0.55));
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: edge-flow 6s linear infinite;
 }
 
 .header {
@@ -54,7 +52,7 @@
   font-size: clamp(1.3rem, 3vw, 1.6rem);
   font-weight: 800;
   line-height: 1.2;
-  letter-spacing: -0.025em;
+  letter-spacing: 0.02em;
 }
 
 .hint {
@@ -85,7 +83,7 @@
 .field input:focus {
   outline: none;
   background: rgba(6, 8, 20, 0.95);
-  box-shadow: inset 0 0 0 2px var(--shield), inset 0 0 28px rgba(59, 130, 255, 0.18);
+  box-shadow: inset 0 0 0 2px var(--gold), inset 0 0 28px rgba(215, 180, 106, 0.14);
 }
 
 .field input:disabled {
@@ -106,7 +104,7 @@
 .field input:focus + label,
 .field input:not(:placeholder-shown) + label {
   transform: translateY(-11px) scale(0.76);
-  color: var(--cyan);
+  color: var(--gold-hi);
 }
 
 .toggle {
@@ -147,33 +145,20 @@
   margin-top: 4px;
   padding: 15px 20px;
   overflow: hidden;
-  color: #fff;
-  font-family: var(--font-body);
+  color: #1b1307;
+  font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   border: 0;
-  background: linear-gradient(100deg, var(--breach), var(--violet), var(--shield), var(--violet), var(--breach));
-  background-size: 250% 100%;
+  background: linear-gradient(180deg, #f8ebc0 0%, #dcb96f 52%, #b88d3f 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 32px rgba(215, 180, 106, 0.24);
   border-radius: var(--radius-md);
-  animation: gradient-flow 7s linear infinite;
-  transition: transform 0.2s ease;
-}
-
-.submit::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
-  transform: translateX(-130%);
-  transition: transform 0.75s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .submit:hover:not(:disabled) {
   transform: translateY(-2px);
-}
-
-.submit:hover:not(:disabled)::after {
-  transform: translateX(130%);
 }
 
 .submit:disabled {
@@ -184,8 +169,8 @@
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #fff;
+  border: 2px solid rgba(27, 19, 7, 0.3);
+  border-top-color: #1b1307;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -199,8 +184,8 @@
 
 .linkButton {
   padding: 4px 2px;
-  color: var(--cyan);
-  font-size: 0.88rem;
+  color: var(--gold-hi);
+  font-size: 0.95rem;
   font-weight: 700;
   background: none;
   border: 0;
@@ -225,7 +210,7 @@
 }
 
 .notice a {
-  color: var(--cyan);
+  color: var(--gold-hi);
   font-weight: 700;
 }
 

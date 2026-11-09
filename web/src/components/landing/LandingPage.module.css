@@ -1,8 +1,24 @@
 .page {
+  /* One system for every public section: night base, parchment text, gold ornament, ember red and sky blue light. */
+  --ink: #05060f;
+  --gold: #d7b46a;
+  --gold-hi: #f3e2b2;
+  --gold-lo: #8d6b2c;
+  --breach: #ee4a62;
+  --shield: #5f8fff;
+  --bone: #ece6d6;
+  --fog: #aaa597;
+  --line: rgba(215, 180, 106, 0.24);
+  --font-display: var(--font-cinzel-loaded), "Trajan Pro", "Times New Roman", serif;
+  --font-wordmark: var(--font-cinzel-deco-loaded), var(--font-cinzel-loaded), serif;
+  --font-ui: var(--font-body-loaded), system-ui, sans-serif;
+  --font-body: var(--font-crimson-loaded), Georgia, "Times New Roman", serif;
   position: relative;
   min-height: 100vh;
   overflow-x: clip;
   background: var(--ink);
   color: var(--bone);
   font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.6;
 }

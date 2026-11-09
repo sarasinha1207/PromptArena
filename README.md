@@ -184,6 +184,22 @@ Every **Log in** button goes to `/auth/login`; signed-in users see **Enter the a
 - Motion: letter-by-letter headline, typewriter line, scroll reveals, slanted marquee ribbons, scroll progress bar,
   cursor glow, tilt on screen previews, expanding level slats, shimmer buttons. All of it is switched off under
   `prefers-reduced-motion`.
+- **Look (fourth pass: one design system, Middle-earth theme).** Every public section is built from the same kit
+  (`shared.module.css`, `SectionHeader.tsx`, tokens on `.page` in `LandingPage.module.css`):
+  - Palette: night `#05060f`, parchment text `#ece6d6`, gold `#d7b46a` (ornament, headings, the one action colour), ember red `#ee4a62` (Round 1) and sky blue `#5f8fff` (Round 2) used as light, never as button colours.
+  - Type: Cinzel for headings and labels, Cinzel Decorative for the gold PromptArena wordmark, Crimson Pro for copy. The product screen previews in Rounds keep the in-event type.
+  - Frame: every section has a gold hairline divider on top, red and blue light in opposite corners (`data-lights="a"`/`"b"`), the same gold heading with a diamond rule and a lead line, and the same rounded gold-edged cards. Gold primary and outline buttons everywhere, including login.
+  - Sparks: a fixed layer of drifting gold, red and blue lights (`Embers.tsx`); the hero has its own.
+- **Pictures:** three black-and-white wizard images supplied by the team are turned into "light only" art, so they blend into the dark
+  page instead of looking like pasted photos: brightness becomes opacity (dark parts are transparent, so a silhouette is simply the page's
+  own darkness), lit parts are tinted gold to blue with red light from the left, plus a little grain. They are WebP files with
+  transparency in `web/public/assets/landing/`: `gandalf-hero.webp` (hero, closing section, login), `gandalf-portrait.webp` (About, no
+  frame) and `gandalf-shire.webp` (faint Rounds backdrop). **Licensing:** these look like film stills and fan art (one carries the
+  artist's signature, which is cropped out). Confirm you may publish them, or swap in licensed artwork at the same paths, before a public
+  launch.
+- **Fonts:** Cinzel, Cinzel Decorative and Crimson Pro (SIL Open Font License), latin subset, bundled in `web/src/fonts/` and set only on
+  the public pages (`--font-display` and `--font-body` are overridden on the landing page and the login screen).
+- The wordmark is sized to its own lettering (`width: max-content`) so the gold gradient always covers every letter at any screen width.
 - The login page (`/auth/login`) shares the same look: arena showcase on the left, animated form on the right.
 - Colours are neutral-to-arena placeholders for the UI/UX team; they live in `web/src/styles/tokens.css`.
 

@@ -1,31 +1,22 @@
+/* A calm ticker of keywords between sections: gold lettering on the night base. */
 .wrap {
   position: relative;
-  z-index: 5;
   overflow: hidden;
-  padding: 36px 0;
-  margin: -36px 0;
-  pointer-events: none;
+  padding: 18px 0;
+  background: rgba(5, 6, 15, 0.9);
+  border-block: 1px solid var(--line);
 }
 
 .band {
-  display: flex;
   overflow: hidden;
-  padding: 16px 0;
-  transform: rotate(-1.6deg) scale(1.04);
-  background: linear-gradient(100deg, var(--breach), var(--violet) 50%, var(--shield));
-  box-shadow: 0 0 60px rgba(138, 61, 255, 0.35);
-}
-
-.band[data-tone="ghost"] {
-  background: rgba(238, 241, 251, 0.05);
-  box-shadow: inset 0 1px 0 var(--line), inset 0 -1px 0 var(--line);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
 .track {
   display: flex;
-  flex: none;
   width: max-content;
-  animation: scroll 38s linear infinite;
+  animation: scroll 70s linear infinite;
 }
 
 .band[data-reverse="true"] .track {
@@ -34,7 +25,6 @@
 
 .list {
   display: flex;
-  flex: none;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -43,26 +33,22 @@
 .list li {
   display: flex;
   align-items: center;
+  padding-left: 28px;
+  color: var(--gold-hi);
   font-family: var(--font-display);
-  font-size: clamp(0.95rem, 1.8vw, 1.4rem);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
   white-space: nowrap;
-  color: #fff;
-}
-
-.band[data-tone="ghost"] .list li {
-  color: var(--fog);
 }
 
 .list li::after {
   content: "";
-  width: 10px;
-  height: 10px;
-  margin: 0 28px;
-  background: var(--flag-gold);
-  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: 28px;
+  background: var(--gold);
+  opacity: 0.7;
+  transform: rotate(45deg);
 }
 
 @keyframes scroll {

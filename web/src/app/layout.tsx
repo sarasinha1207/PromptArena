@@ -35,6 +35,32 @@ const mono = localFont({
   display: "swap",
 });
 
+// Cinzel: engraved, Middle-earth style capitals for the public pages.
+const cinzel = localFont({
+  src: "../fonts/Cinzel-400-900.woff2",
+  weight: "400 900",
+  variable: "--font-cinzel-loaded",
+  display: "swap",
+});
+
+// Cinzel Decorative: the PromptArena wordmark on the landing page.
+const cinzelDeco = localFont({
+  src: [
+    { path: "../fonts/CinzelDecorative-700.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/CinzelDecorative-900.woff2", weight: "900", style: "normal" },
+  ],
+  variable: "--font-cinzel-deco-loaded",
+  display: "swap",
+});
+
+// Crimson Pro: the warm book serif for copy on the public pages.
+const crimson = localFont({
+  src: "../fonts/CrimsonPro-300-800.woff2",
+  weight: "300 800",
+  variable: "--font-crimson-loaded",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "PromptArena",
   description:
@@ -49,7 +75,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      className={`${display.variable} ${body.variable} ${mono.variable} ${cinzel.variable} ${cinzelDeco.variable} ${crimson.variable}`}
     >
       <body suppressHydrationWarning>
         <AppProviders>{children}</AppProviders>

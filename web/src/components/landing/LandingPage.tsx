@@ -1,6 +1,7 @@
 import { AboutSection } from "./AboutSection";
 import { ClosingCta } from "./ClosingCta";
 import { CursorGlow } from "./CursorGlow";
+import { Embers } from "./Embers";
 import { Hero } from "./Hero";
 import { LandingFooter } from "./LandingFooter";
 import { LandingHeader } from "./LandingHeader";
@@ -27,6 +28,7 @@ const KEYWORDS = [
 export function LandingPage() {
   return (
     <div className={styles.page}>
+      <Embers />
       <CursorGlow />
       <LandingHeader />
       <Hero />

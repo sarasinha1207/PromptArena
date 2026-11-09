@@ -1,4 +1,15 @@
 .screen {
+  --font-display: var(--font-cinzel-loaded), "Trajan Pro", "Times New Roman", serif;
+  --font-body: var(--font-crimson-loaded), Georgia, "Times New Roman", serif;
+  --ink: #05060f;
+  --gold: #d7b46a;
+  --gold-hi: #f3e2b2;
+  --breach: #ee4a62;
+  --shield: #5f8fff;
+  --bone: #ece6d6;
+  --fog: #aaa597;
+  --line: rgba(215, 180, 106, 0.26);
+  font-size: 1.1rem;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -27,14 +38,15 @@
 }
 
 .bgLeft {
-  background: linear-gradient(160deg, #1a0a22 0%, #0a1030 60%, var(--ink));
+  background: linear-gradient(160deg, #0d0614 0%, #050818 60%, #02030a);
 }
 
 .bgRight {
-  background: #080b20;
+  background: #03040c;
 }
 
 .orb {
+  opacity: 0.8;
   position: absolute;
   width: 52vw;
   height: 52vw;
@@ -91,6 +103,17 @@
   transform-origin: center bottom;
 }
 
+/* The wizard photo stands on the line between the two halves. */
+.wizardPhoto {
+  position: absolute;
+  bottom: 0;
+  left: 52.5%;
+  height: min(92vh, 900px);
+  width: auto;
+  transform: translateX(-50%);
+  opacity: 0.55;
+}
+
 .dots {
   position: absolute;
   inset: 0;
@@ -127,13 +150,21 @@
 }
 
 .name {
+  display: block;
+  width: max-content;
+  max-width: 100%;
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2.6rem, 6vw, 5.2rem);
+  padding: 0.04em 0.06em 0.12em 0;
+  font-family: var(--font-cinzel-deco-loaded), var(--font-cinzel-loaded), serif;
   font-weight: 900;
-  line-height: 1.02;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
+  font-size: clamp(2.2rem, 4.4vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: linear-gradient(180deg, #fff6d6 0%, #f0d48a 45%, #b98a36 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .desc {
@@ -169,7 +200,7 @@
 }
 
 .rulesLink {
-  color: var(--cyan);
+  color: var(--gold-hi);
   font-size: 0.85rem;
   font-weight: 700;
   text-decoration: none;
@@ -348,5 +379,11 @@
   }
   .mark {
     transition: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .wizardPhoto {
+    display: none;
   }
 }

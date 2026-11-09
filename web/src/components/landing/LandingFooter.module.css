@@ -1,7 +1,7 @@
 .footer {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--ink), #050716);
+  background: #04050c;
   border-top: 1px solid var(--line);
 }
 
@@ -20,17 +20,19 @@
 }
 
 .brandName {
+  color: var(--gold-hi);
   font-family: var(--font-display);
   font-size: 1.3rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.06em;
 }
 
 .tagline {
   max-width: 34ch;
   margin: 14px 0 0;
   color: var(--fog);
+  font-size: 1.15rem;
+  line-height: 1.5;
 }
 
 .column {
@@ -41,21 +43,28 @@
 
 .columnTitle {
   margin: 0 0 6px;
+  color: var(--gold);
   font-family: var(--font-display);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--bone);
+  letter-spacing: 0.08em;
 }
 
 .link {
-  color: var(--fog);
-  text-decoration: none;
   width: fit-content;
+  color: var(--fog);
+  font-size: 1.15rem;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .link:hover {
-  color: var(--bone);
+  color: var(--gold-hi);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 3px;
 }
 
 .notice {
@@ -64,46 +73,29 @@
   gap: 16px;
   flex-wrap: wrap;
   padding-top: 20px;
-  padding-bottom: 28px;
+  padding-bottom: 32px;
   border-top: 1px solid var(--line);
   color: var(--fog);
-  font-size: 0.9rem;
+  font-size: 1.05rem;
 }
 
 .notice p {
   margin: 0;
 }
 
+/* Large outlined wordmark at the very bottom; sized to its own lettering so no letter is clipped */
 .wordmark {
-  margin-top: -0.12em;
-  margin-bottom: -0.22em;
-  text-align: center;
-  font-family: var(--font-display);
+  width: max-content;
+  margin: -0.1em auto -0.2em;
+  font-family: var(--font-wordmark);
   font-weight: 900;
-  font-size: clamp(2.2rem, 10.6vw, 11rem);
+  font-size: clamp(2rem, 9.4vw, 9.6rem);
   line-height: 1;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: transparent;
-  background: linear-gradient(100deg, rgba(255, 49, 88, 0.5), rgba(138, 61, 255, 0.4), rgba(59, 130, 255, 0.5), rgba(255, 49, 88, 0.5));
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-stroke: 1px rgba(238, 241, 251, 0.14);
+  -webkit-text-stroke: 1px rgba(215, 180, 106, 0.3);
   user-select: none;
   white-space: nowrap;
-}
-
-@keyframes wordmark-flow {
-  to {
-    background-position: 250% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .wordmark {
-    animation: none;
-  }
 }
 
 @media (max-width: 760px) {

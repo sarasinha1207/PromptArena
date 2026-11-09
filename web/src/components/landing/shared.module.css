@@ -1,107 +1,168 @@
+/* ===== Shared kit for the public pages: containers, section frame, headings, buttons ===== */
+
 .container {
   width: min(1200px, 100% - 48px);
   margin-inline: auto;
 }
 
+/*
+ * Every section uses the same frame: a hairline gold divider on top, red and blue light in
+ * opposite corners (data-lights "a" or "b" mirrors them), and the same vertical rhythm.
+ */
 .section {
   position: relative;
-  padding: clamp(80px, 11vw, 144px) 0;
+  padding: clamp(88px, 10vw, 136px) 0;
   scroll-margin-top: 40px;
   overflow: hidden;
   isolation: isolate;
 }
 
-.heading {
-  margin: 0 0 22px;
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.section[data-lights="a"]::before {
+  background:
+    radial-gradient(60% 55% at 0% 14%, rgba(238, 74, 98, 0.2), transparent 70%),
+    radial-gradient(55% 55% at 100% 88%, rgba(95, 143, 255, 0.22), transparent 70%);
+}
+
+.section[data-lights="b"]::before {
+  background:
+    radial-gradient(60% 55% at 100% 12%, rgba(95, 143, 255, 0.2), transparent 70%),
+    radial-gradient(55% 55% at 0% 90%, rgba(238, 74, 98, 0.18), transparent 70%);
+}
+
+.section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  width: min(1200px, 100% - 48px);
+  height: 1px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, var(--gold-hi) 0, transparent 90px),
+    linear-gradient(90deg, transparent, var(--line) 16%, var(--line) 84%, transparent);
+}
+
+/* ---------- Section heading: gold lettering, one ornament, one lead ---------- */
+.header {
+  max-width: 780px;
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.title {
+  display: inline-block;
+  margin: 0;
+  padding-bottom: 0.1em;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.9rem, 3.9vw, 3.3rem);
-  line-height: 1.12;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.9rem, 3.7vw, 3.1rem);
+  line-height: 1.15;
+  letter-spacing: 0.03em;
   text-wrap: balance;
+  background: linear-gradient(180deg, #fbefc7 0%, #e3c27c 55%, #b98c3e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ornament {
+  position: relative;
+  display: block;
+  width: 220px;
+  height: 12px;
+  margin: 14px 0 22px;
+  background:
+    linear-gradient(90deg, var(--gold) 0%, transparent) left center / calc(50% - 14px) 1px no-repeat,
+    linear-gradient(270deg, var(--gold) 0%, transparent) right center / calc(50% - 14px) 1px no-repeat;
+}
+
+.ornament::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .lead {
   margin: 0;
   max-width: 58ch;
   color: var(--fog);
-  font-size: 1.08rem;
-  line-height: 1.7;
+  font-size: 1.3rem;
+  line-height: 1.55;
 }
 
+/* ---------- Buttons: gold is the one action colour ---------- */
 .btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 15px 30px;
+  padding: 14px 28px;
   border: 0;
-  overflow: hidden;
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  border-radius: var(--radius-md);
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.4) 50%, transparent 70%);
-  transform: translateX(-130%);
-  transition: transform 0.75s ease;
+  border-radius: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .btn:hover {
   transform: translateY(-2px);
 }
 
-.btn:hover::after {
-  transform: translateX(130%);
+.btn:focus-visible {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 3px;
 }
 
 .btnPrimary {
-  color: #fff;
-  background: linear-gradient(100deg, var(--breach), var(--violet), var(--shield), var(--violet), var(--breach));
-  background-size: 250% 100%;
-  animation: gradient-flow 7s linear infinite;
+  color: #1b1307;
+  background: linear-gradient(180deg, #f8ebc0 0%, #dcb96f 52%, #b88d3f 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 32px rgba(215, 180, 106, 0.26);
+}
+
+.btnPrimary:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 14px 40px rgba(215, 180, 106, 0.4);
 }
 
 .btnGhost {
-  color: var(--bone);
-  background: rgba(238, 241, 251, 0.07);
-  box-shadow: inset 0 0 0 1px rgba(238, 241, 251, 0.3);
+  color: var(--gold-hi);
+  background: rgba(215, 180, 106, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(215, 180, 106, 0.55);
 }
 
 .btnGhost:hover {
-  background: rgba(238, 241, 251, 0.14);
+  background: rgba(215, 180, 106, 0.12);
 }
 
 .btnSmall {
-  padding: 11px 22px;
-  font-size: 0.92rem;
-}
-
-@keyframes gradient-flow {
-  to {
-    background-position: 250% 0;
-  }
+  padding: 10px 20px;
+  font-size: 0.82rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn,
-  .btn::after {
+  .btn {
     transition: none;
   }
   .btn:hover {
     transform: none;
-  }
-  .btnPrimary {
-    animation: none;
   }
 }

@@ -1,263 +1,188 @@
-.rounds {
-  background: #080b20;
-}
-
-/* ---------- Aurora orbs ---------- */
-.orb {
+/* The wizard on the hill: light only art, kept faint so the copy and the screen preview lead. */
+.hill {
   position: absolute;
   z-index: -1;
-  width: 46vw;
-  height: 46vw;
-  max-width: 640px;
-  max-height: 640px;
-  border-radius: 50%;
-  opacity: 0.55;
-  will-change: transform;
-}
-
-.orbRed {
-  top: -8%;
-  left: -10%;
-  background: radial-gradient(circle, var(--breach), transparent 66%);
-  animation: orbit-a 19s ease-in-out infinite alternate;
-}
-
-.orbBlue {
-  bottom: -14%;
-  right: -8%;
-  background: radial-gradient(circle, var(--shield), transparent 66%);
-  animation: orbit-b 23s ease-in-out infinite alternate;
-}
-
-.orbViolet {
-  top: 30%;
-  left: 38%;
-  opacity: 0.32;
-  background: radial-gradient(circle, var(--violet), transparent 66%);
-  animation: orbit-c 27s ease-in-out infinite alternate;
+  right: -6%;
+  top: 2%;
+  width: min(1100px, 90%);
+  height: auto;
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 44px 0 36px;
+  gap: 12px;
+  margin-bottom: clamp(32px, 4vw, 52px);
 }
 
 .tab {
-  position: relative;
+  --side: var(--gold);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 4px;
-  padding: 18px 22px;
+  padding: 18px 22px 20px;
   color: var(--fog);
   text-align: left;
-  background: rgba(238, 241, 251, 0.05);
+  background: rgba(10, 14, 31, 0.6);
   border: 0;
+  border-radius: 18px;
   box-shadow: inset 0 0 0 1px var(--line);
-  border-radius: 16px;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+
+.tab[data-side="red"] {
+  --side: var(--breach);
+}
+
+.tab[data-side="blue"] {
+  --side: var(--shield);
 }
 
 .tab:hover {
   color: var(--bone);
-  background: rgba(238, 241, 251, 0.1);
-  transform: translateY(-3px);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--side) 55%, transparent);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 3px;
 }
 
 .tab[data-active="true"] {
-  color: #fff;
-  box-shadow: none;
-  background-size: 200% 100%;
-  animation: gradient-slide 5s linear infinite;
-}
-
-.tab[data-active="true"][data-side="red"] {
-  background-image: linear-gradient(120deg, #c4143a, var(--breach), #ff7a93, var(--breach), #c4143a);
-}
-
-.tab[data-active="true"][data-side="blue"] {
-  background-image: linear-gradient(120deg, #1d56c7, var(--shield), #7fb0ff, var(--shield), #1d56c7);
-}
-
-.tab[data-active="true"][data-side="versus"] {
-  background-image: linear-gradient(100deg, var(--breach), var(--violet), var(--shield), var(--violet), var(--breach));
+  color: var(--bone);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--side) 24%, #0a0e1f), #0a0e1f);
+  box-shadow: inset 0 0 0 1px var(--side), 0 14px 44px color-mix(in srgb, var(--side) 22%, transparent);
 }
 
 .tabRound {
+  color: var(--side);
+  font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 700;
-  opacity: 0.85;
+  letter-spacing: 0.08em;
 }
 
 .tabName {
   font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 800;
-  line-height: 1.15;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
 }
 
-/* ---------- Panel (re-mounts on tab change, so it animates) ---------- */
+/* ---------- Selected round ---------- */
 .panel {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
-  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
 
-.copy {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  animation: panel-left 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.preview {
-  animation: panel-right 0.7s 0.08s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
 .role {
-  margin: 0;
+  margin: 0 0 14px;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--gold-hi);
 }
 
 .role[data-side="red"] {
-  color: var(--breach);
+  color: #ff8da0;
 }
+
 .role[data-side="blue"] {
-  color: var(--shield);
-}
-.role[data-side="versus"] {
-  background: linear-gradient(90deg, var(--breach), var(--shield));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #9bbcff;
 }
 
 .summary {
-  margin: 0;
-  font-size: 1.08rem;
-  line-height: 1.65;
-  max-width: 52ch;
+  margin: 0 0 22px;
+  max-width: 54ch;
+  color: rgba(236, 230, 214, 0.9);
+  font-size: 1.25rem;
+  line-height: 1.55;
 }
 
 .points {
-  margin: 0;
+  display: grid;
+  gap: 12px;
+  margin: 0 0 26px;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  color: var(--fog);
 }
 
 .points li {
   position: relative;
-  padding-left: 24px;
-  line-height: 1.55;
-  animation: panel-left 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.points li:nth-child(1) {
-  animation-delay: 0.15s;
-}
-.points li:nth-child(2) {
-  animation-delay: 0.25s;
-}
-.points li:nth-child(3) {
-  animation-delay: 0.35s;
-}
-.points li:nth-child(4) {
-  animation-delay: 0.45s;
+  padding-left: 26px;
+  color: var(--fog);
+  font-size: 1.15rem;
+  line-height: 1.5;
 }
 
 .points li::before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0.55em;
-  width: 9px;
-  height: 9px;
-  background: var(--flag-gold);
-  border-radius: 3px;
-  animation: gem 2.6s ease-in-out infinite;
+  left: 4px;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
 }
 
 .chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 26px;
 }
 
 .chip {
-  padding: 6px 13px;
-  font-size: 0.85rem;
+  padding: 6px 14px;
+  color: var(--gold-hi);
+  font-family: var(--font-ui);
+  font-size: 0.86rem;
   font-weight: 600;
-  background: rgba(59, 130, 255, 0.14);
-  box-shadow: inset 0 0 0 1px rgba(59, 130, 255, 0.45);
+  background: rgba(215, 180, 106, 0.08);
   border-radius: 999px;
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-
-.chip:hover {
-  background: rgba(59, 130, 255, 0.3);
-  transform: translateY(-2px);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .jump {
-  width: fit-content;
-  color: var(--bone);
+  display: inline-block;
+  color: var(--gold-hi);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
   font-weight: 700;
-  text-decoration: underline;
-  text-decoration-color: var(--breach);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+  padding-bottom: 3px;
 }
 
 .jump:hover {
-  text-decoration-color: var(--shield);
+  color: #fff;
 }
 
-@keyframes orbit-a {
-  to {
-    transform: translate(22vw, 18vh) scale(1.2);
-  }
+/* The product screens keep the in-event type, so the preview matches what teams will use. */
+.preview {
+  --font-display: var(--font-display-loaded), system-ui, sans-serif;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.5;
 }
-@keyframes orbit-b {
-  to {
-    transform: translate(-20vw, -14vh) scale(1.15);
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel {
+    animation: swap 0.5s ease both;
   }
-}
-@keyframes orbit-c {
-  to {
-    transform: translate(-14vw, 12vh) scale(0.8);
-  }
-}
-@keyframes gradient-slide {
-  to {
-    background-position: 200% 0;
-  }
-}
-@keyframes panel-left {
-  from {
-    opacity: 0;
-    transform: translateX(-28px);
-  }
-}
-@keyframes panel-right {
-  from {
-    opacity: 0;
-    transform: translateX(36px) scale(0.97);
-  }
-}
-@keyframes gem {
-  50% {
-    transform: rotate(90deg) scale(1.25);
+
+  @keyframes swap {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
   }
 }
 
@@ -270,26 +195,5 @@
 @media (max-width: 640px) {
   .tabs {
     grid-template-columns: 1fr;
-  }
-
-  .tab {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 12px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orb,
-  .tab[data-active="true"],
-  .copy,
-  .preview,
-  .points li,
-  .points li::before {
-    animation: none;
-  }
-  .tab,
-  .chip {
-    transition: none;
   }
 }

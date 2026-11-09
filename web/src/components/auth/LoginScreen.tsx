@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { GlyphField } from "@/components/landing/GlyphField";
 import { LogoMark } from "@/components/landing/LogoMark";
-import { SplitText } from "@/components/landing/SplitText";
 import { LOGIN_RULES } from "@/content/landing";
 import { LoginForm } from "./LoginForm";
 import styles from "./LoginScreen.module.css";
@@ -25,6 +24,16 @@ export function LoginScreen() {
           <i className={`${styles.orb} ${styles.orbViolet}`} />
           <div className={styles.dots} />
         </div>
+        {/* Wizard picture, coloured from black and white, standing on the line between the two halves */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className={styles.wizardPhoto}
+          src="/assets/landing/gandalf-hero.webp"
+          alt=""
+          width={1000}
+          height={1344}
+          decoding="async"
+        />
       </div>
 
       <aside className={styles.showcase}>
@@ -32,11 +41,7 @@ export function LoginScreen() {
           <Link href="/" className={styles.mark} aria-label="PromptArena home">
             <LogoMark size={56} />
           </Link>
-          <h2 className={styles.name}>
-            <SplitText text="Prompt" />
-            <br />
-            <SplitText text="Arena" tone="blue" base={300} />
-          </h2>
+          <h2 className={styles.name}>PromptArena</h2>
           <p className={styles.desc}>
             An adversarial competition for the AI era.
             <br />
