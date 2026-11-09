@@ -11,3 +11,6 @@ next-env.d.ts
 
 # Team registrations saved by the mock server (personal data)
 mock-server/data/
+
+# Local tool settings
+.claude/
